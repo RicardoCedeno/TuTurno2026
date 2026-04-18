@@ -1,0 +1,51 @@
+<form class="space-y-6" #form="ngForm">
+  <div>
+    <label for="name" class="block text-sm font-medium text-[var(--color-text-main)] mb-1">
+      Nombre de especialidad
+    </label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      class="block w-full px-4 py-2 rounded-lg border border-[var(--color-border)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+      placeholder="Ej: Cardiología"
+      required
+      ngModel
+      #nameInput="ngModel"
+    />
+  </div>
+  <div>
+    <label for="description" class="block text-sm font-medium text-[var(--color-text-main)] mb-1">
+      Descripción
+    </label>
+    <input
+      type="text"
+      id="description"
+      name="description"
+      class="block w-full px-4 py-2 rounded-lg border border-[var(--color-border)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+      placeholder="Breve descripción..."
+      required
+      ngModel
+      #descriptionInput="ngModel"
+    />
+  </div>
+  <div class="flex gap-2 justify-end">
+    <button
+      type="submit"
+      class="bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white px-6 py-2 rounded-lg font-medium transition-colors"
+      [disabled]="!form.valid"
+      (click)="onSubmit(form)"
+    >
+      Agregar especialidad
+    </button>
+    <button
+      type="button"
+      class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+ 
+ 
+      (click)="onCancel()"
+    >
+      Cancelar
+    </button>
+  </div>
+</form>

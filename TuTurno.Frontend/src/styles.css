@@ -1,0 +1,18 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg-main: #f8fafc;        /* Slate 50 */
+    --color-bg-sidebar: #ffffff;     /* White */
+    --color-primary: #0ea5e9;        /* Sky 500 */
+    --color-primary-dark: #0369a1;   /* Sky 700 */
+    --color-text-main: #1e293b;      /* Slate 800 */
+    --color-text-muted: #64748b;     /* Slate 500 */
+    --color-border: #e2e8f0;         /* Slate 200 */
+  }
+}
