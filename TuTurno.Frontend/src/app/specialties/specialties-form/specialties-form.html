@@ -1,4 +1,5 @@
 <form class="space-y-6" #form="ngForm">
+  <input type="hidden" name="id" [(ngModel)]="formValues.id" />
   <div>
     <label for="name" class="block text-sm font-medium text-[var(--color-text-main)] mb-1">
       Nombre de especialidad
@@ -10,7 +11,7 @@
       class="block w-full px-4 py-2 rounded-lg border border-[var(--color-border)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
       placeholder="Ej: Cardiología"
       required
-      ngModel
+      [(ngModel)]="formValues.name"
       #nameInput="ngModel"
     />
   </div>
@@ -25,7 +26,7 @@
       class="block w-full px-4 py-2 rounded-lg border border-[var(--color-border)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
       placeholder="Breve descripción..."
       required
-      ngModel
+      [(ngModel)]="formValues.description"
       #descriptionInput="ngModel"
     />
   </div>

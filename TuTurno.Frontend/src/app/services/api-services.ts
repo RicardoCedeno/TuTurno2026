@@ -83,4 +83,5 @@ export class ApiServices {
     }
     return this.http.delete<T>(`${this.apiUrl}${url}`, { headers }) as Observable<T>;
   }
+
 }

@@ -18,13 +18,25 @@
   </div>
   @switch (mode()) {
     @case ('list') {
-      <app-specialties-list [specialties]="specialties()" (delete)="deleteSpecialty($event)"></app-specialties-list>
+      <app-specialties-list
+        [specialties]="specialties()"
+        (delete)="deleteSpecialty($event)"
+        (updateSpecialty)="onEditSpecialty($event)"
+      ></app-specialties-list>
     }
     @case ('create') {
-      <app-specialties-form (createSpecialty)="createSpecialty($event)" (cancel)="onCancel($event)"></app-specialties-form>
+      <app-specialties-form
+        [mode]="'create'"
+        (createSpecialty)="createSpecialty($event)"
+        (cancel)="onCancel('list')"
+      ></app-specialties-form>
     }
     @case ('update') {
-      
+      <app-specialties-form
+        [mode]="'update'"
+        (updateSpecialty)="updateSpecialty($event)"
+        (cancel)="onCancel('list')"
+      ></app-specialties-form>
     }
     @default {
       <app-specialties-list [specialties]="specialties()"></app-specialties-list>

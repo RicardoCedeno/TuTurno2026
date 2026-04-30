@@ -5,6 +5,7 @@ import { SpecialtiesList } from '../specialties-list/specialties-list';
 import { CommonModule } from '@angular/common';
 import { SpecialtiesForm } from '../specialties-form/specialties-form';
 import { AlertsService } from '../../services/alerts-service';
+import { DataServices } from '../../services/data-services';
 
 @Component({
   selector: 'app-specialties',
@@ -20,6 +21,7 @@ export class Specialties {
   private error = signal<string | null>(null);
   mode = signal<'list' | 'create' | 'update' | null>(null);
   private alertsService = inject(AlertsService);
+  private dataServices = inject(DataServices<ISpecialty>);
   constructor() {
     this.mode.set('list');
     
@@ -43,6 +45,7 @@ export class Specialties {
   }
 
   onAddSpecialty(){
+    this.dataServices.clearSelectedItem();
     this.mode.set('create');
   }
 
@@ -67,8 +70,11 @@ export class Specialties {
     });
   }
 
-  onCancel(mode: string){
-    this.mode.set(mode as 'list' | 'create' | 'update');
+  onCancel(mode: 'list' | 'create' | 'update'){
+    this.mode.set(mode);
+    if (mode === 'list') {
+      this.dataServices.clearSelectedItem();
+    }
   }
 
 
@@ -96,5 +102,16 @@ export class Specialties {
         this.alertsService.showWarningAlert('No se eliminó la especialidad');
       }
     });
+  }
+
+  onEditSpecialty(specialty: ISpecialty){
+    this.dataServices.setSelectedItem(specialty);
+    this.mode.set('update');
+  }
+
+  updateSpecialty(specialty: ISpecialty){
+    console.log('Actualizando especialidad', specialty);
+    this.mode.set('list');
+    this.dataServices.clearSelectedItem();
   }
 }
