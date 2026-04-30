@@ -1,12 +1,12 @@
 <div class="bg-white p-6 rounded-2xl shadow border border-[var(--color-border)]">
-  <div class="flex items-center justify-between mb-6">
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
     <h2 class="text-2xl font-semibold text-[var(--color-primary-dark)]">Especialidades Médicas</h2>
-    <div class="flex gap-2">
+    <div class="flex flex-col gap-2 sm:flex-row">
       <button (click)="onAddSpecialty()" class="flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg>
-        Nueva especialidad
+        Nueva
       </button>
       <button (click)="getSpecialties()" class="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -18,7 +18,7 @@
   </div>
   @switch (mode()) {
     @case ('list') {
-      <app-specialties-list [specialties]="specialties()"></app-specialties-list>
+      <app-specialties-list [specialties]="specialties()" (delete)="deleteSpecialty($event)"></app-specialties-list>
     }
     @case ('create') {
       <app-specialties-form (createSpecialty)="createSpecialty($event)" (cancel)="onCancel($event)"></app-specialties-form>

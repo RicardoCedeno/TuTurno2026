@@ -1,9 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "tailwindcss";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
 
 @layer base {
   :root {
@@ -14,5 +12,44 @@
     --color-text-main: #1e293b;      /* Slate 800 */
     --color-text-muted: #64748b;     /* Slate 500 */
     --color-border: #e2e8f0;         /* Slate 200 */
+  }
+}
+
+@layer utilities {
+  .particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    background: var(--color-primary);
+    border-radius: 50%;
+    opacity: 0.2;
+    filter: blur(1px);
+    animation: float-up linear infinite;
+  }
+
+  @keyframes float-up {
+    0% {
+      transform: translateY(110vh) translateX(0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.2;
+    }
+    90% {
+      opacity: 0.2;
+    }
+    100% {
+      transform: translateY(-10vh) translateX(50px);
+      opacity: 0;
+    }
   }
 }

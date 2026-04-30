@@ -1,5 +1,24 @@
-<div class="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-main)] flex flex-col">
+<div class="min-h-screen bg-[var(--color-bg-main)] text-[var(--color-text-main)] flex flex-col relative overflow-hidden">
   
+  <!-- Particles Background -->
+  <div class="particles-container">
+    <div class="particle" style="width: 8px; height: 8px; left: 5%; animation-duration: 15s; animation-delay: 0s;"></div>
+    <div class="particle" style="width: 4px; height: 4px; left: 15%; animation-duration: 25s; animation-delay: -5s;"></div>
+    <div class="particle" style="width: 6px; height: 6px; left: 25%; animation-duration: 20s; animation-delay: -2s;"></div>
+    <div class="particle" style="width: 10px; height: 10px; left: 35%; animation-duration: 30s; animation-delay: -10s;"></div>
+    <div class="particle" style="width: 5px; height: 5px; left: 45%; animation-duration: 18s; animation-delay: -7s;"></div>
+    <div class="particle" style="width: 7px; height: 7px; left: 55%; animation-duration: 22s; animation-delay: -3s;"></div>
+    <div class="particle" style="width: 3px; height: 3px; left: 65%; animation-duration: 28s; animation-delay: -15s;"></div>
+    <div class="particle" style="width: 9px; height: 9px; left: 75%; animation-duration: 24s; animation-delay: -8s;"></div>
+    <div class="particle" style="width: 4px; height: 4px; left: 85%; animation-duration: 35s; animation-delay: -20s;"></div>
+    <div class="particle" style="width: 6px; height: 6px; left: 95%; animation-duration: 12s; animation-delay: -4s;"></div>
+    <div class="particle" style="width: 5px; height: 5px; left: 12%; animation-duration: 21s; animation-delay: -12s;"></div>
+    <div class="particle" style="width: 8px; height: 8px; left: 28%; animation-duration: 16s; animation-delay: -6s;"></div>
+    <div class="particle" style="width: 3px; height: 3px; left: 42%; animation-duration: 32s; animation-delay: -18s;"></div>
+    <div class="particle" style="width: 7px; height: 7px; left: 68%; animation-duration: 19s; animation-delay: -9s;"></div>
+    <div class="particle" style="width: 10px; height: 10px; left: 82%; animation-duration: 27s; animation-delay: -1s;"></div>
+  </div>
+
   <header class="h-16 bg-[var(--color-bg-sidebar)] border-b border-[var(--color-border)] flex items-center justify-between px-4 sticky top-0 z-50">
     <div class="flex items-center gap-4">
       <button (click)="isSidebarOpen = !isSidebarOpen" class="lg:hidden p-2 hover:bg-gray-100 rounded-lg">

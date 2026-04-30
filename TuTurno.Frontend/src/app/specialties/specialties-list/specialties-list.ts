@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input, output, Output } from '@angular/core';
 import { ISpecialty } from '../../models/specialty';
 
 @Component({
@@ -10,9 +10,9 @@ import { ISpecialty } from '../../models/specialty';
 })
 export class SpecialtiesList {
   @Input() specialties: ISpecialty[] | null = null;
+  delete = output<string>();
 
-  constructor() {
-    console.log(this.specialties);
+  deleteSpecialty(id: string){
+    this.delete.emit(id);
   }
-
 }

@@ -70,4 +70,31 @@ export class Specialties {
   onCancel(mode: string){
     this.mode.set(mode as 'list' | 'create' | 'update');
   }
+
+
+  deleteSpecialty(id: string){
+    this.alertsService.showQuestionAlert('¿Estás seguro de querer eliminar esta especialidad?').then((result: any) => {
+      if(result.isConfirmed){
+        this.loading.set(true);
+        this.specialtiesServices.deleteSpecialty(id).subscribe({
+          next: (response) => {
+            if(response.success){
+              this.alertsService.showSuccessAlert('Especialidad eliminada correctamente');
+              this.getSpecialties();
+            } else {
+              this.alertsService.showErrorAlert(`Error al eliminar la especialidad: ${JSON.stringify(response.errors)}`);
+            }
+          },
+          error: (error: any) => {
+            this.alertsService.showErrorAlert(`Error al eliminar la especialidad: ${JSON.stringify(error.errors)}`);
+          },
+          complete: () => {
+            this.loading.set(false);
+          }
+        });
+      } else {
+        this.alertsService.showWarningAlert('No se eliminó la especialidad');
+      }
+    });
+  }
 }
