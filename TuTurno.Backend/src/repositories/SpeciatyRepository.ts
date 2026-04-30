@@ -57,7 +57,6 @@ export class SpecialtyRepository {
         return new Specialty(updatedSpecialty);
     }
     async delete(id: string): Promise<void> {
-        //delete the specialty by id
         await prisma.specialty.delete({ where: { id: id } });
     }
 

@@ -15,50 +15,215 @@ model User {
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
   @@map("users")
 }
 
-
-  // -------------------
-
 model Specialty {
-  id          String   @id @default(uuid())
+  id          String               @id @default(uuid())
   name        String
   description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
 
   doctors     DoctorsSpecialties[]
+
   @@map("specialties")
 }
 
-model Doctor{
-  id        String    @id @default(uuid())
-  name      String
-  email     String    @unique
-  phone     String
+model Doctor {
+  id           String               @id @default(uuid())
+  name         String
+  email        String               @unique
+  phone        String
+  address      String
+  city         String
+  state        String
+  country      String
+  active       Boolean              @default(true)
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+
+  specialties    DoctorsSpecialties[]
+  availability   DoctorAvailability[]
+  unavailability DoctorUnavailability[]
+  appointments   Appointment[]
+
+  @@map("doctors")
+}
+
+model DoctorsSpecialties {
+  id          String    @id @default(uuid())
+  doctorId    String
+  specialtyId String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  doctor      Doctor    @relation(fields: [doctorId], references: [id])
+  specialty   Specialty @relation(fields: [specialtyId], references: [id])
+
+  @@unique([doctorId, specialtyId])
+  @@map("doctors_specialties")
+}
+
+// ==================
+// PACIENTES
+// ==================
+
+model Patient {
+  id           String         @id @default(uuid())
+  name         String
+  email        String         @unique
+  phone        String
+  birthDate    DateTime
+  gender       String         // male | female | other
+  address      String?
+  city         String?
+  state        String?
+  country      String?
+  active       Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  appointments  Appointment[]
+  notifications Notification[]
+
+  @@map("patients")
+}
+
+// ==================
+// CONSULTORIOS
+// ==================
+
+// Sede o clinica (un consultorio puede tener varias sedes)
+model Location {
+  id        String   @id @default(uuid())
+  name      String   // Ej: "Sede Norte", "Clínica Central"
   address   String
   city      String
   state     String
   country   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  phone     String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  specialties DoctorsSpecialties[]
-  @@map("doctors")
+  offices   Office[]
+
+  @@map("locations")
 }
 
+// Sala o consultorio fisico donde se atiende al paciente
+model Office {
+  id          String        @id @default(uuid())
+  locationId  String
+  name        String        // Ej: "Consultorio 1", "Sala B"
+  floor       String?
+  description String?
+  active      Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 
-model DoctorsSpecialties{
-  id           String    @id @default(uuid())
-  doctorId     String
-  specialtyId  String
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  location     Location      @relation(fields: [locationId], references: [id])
+  appointments Appointment[]
 
-  doctor       Doctor    @relation(fields: [doctorId], references: [id])
-  specialty    Specialty @relation(fields: [specialtyId], references: [id])
+  @@map("offices")
+}
 
-  @@map("doctors_specialties")
-  @@unique([doctorId, specialtyId])
+// ==================
+// DISPONIBILIDAD
+// ==================
+
+// Franjas horarias recurrentes por dia de semana
+model DoctorAvailability {
+  id          String   @id @default(uuid())
+  doctorId    String
+  dayOfWeek   Int      // 0=domingo, 1=lunes ... 6=sabado
+  startTime   String   // Ej: "08:00"
+  endTime     String   // Ej: "17:00"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  doctor      Doctor   @relation(fields: [doctorId], references: [id])
+
+  @@unique([doctorId, dayOfWeek, startTime])
+  @@map("doctor_availability")
+}
+
+// Excepciones a la disponibilidad recurrente (vacaciones, permisos, festivos)
+model DoctorUnavailability {
+  id        String   @id @default(uuid())
+  doctorId  String
+  startDate DateTime
+  endDate   DateTime
+  reason    String?  // Ej: "Vacaciones", "Congreso médico"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+
+  @@map("doctor_unavailability")
+}
+
+// ==================
+// CITAS
+// ==================
+
+model Appointment {
+  id          String    @id @default(uuid())
+  patientId   String
+  doctorId    String
+  officeId    String
+  date        DateTime  // Fecha y hora exacta de la cita
+  duration    Int       @default(30) // Minutos
+  status      String    @default("scheduled")
+  // scheduled | confirmed | cancelled | completed | no_show
+  notes       String?   // Motivo de consulta
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  patient       Patient               @relation(fields: [patientId], references: [id])
+  doctor        Doctor                @relation(fields: [doctorId], references: [id])
+  office        Office                @relation(fields: [officeId], references: [id])
+  cancellation  AppointmentCancellation?
+  notifications Notification[]
+
+  @@map("appointments")
+}
+
+// Separada de Appointment para guardar quien cancelo y por que
+model AppointmentCancellation {
+  id            String      @id @default(uuid())
+  appointmentId String      @unique
+  cancelledBy   String      // patient | doctor | admin
+  reason        String?
+  cancelledAt   DateTime    @default(now())
+
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+
+  @@map("appointment_cancellations")
+}
+
+// ==================
+// NOTIFICACIONES
+// ==================
+
+// Recordatorios y confirmaciones enviados al paciente
+model Notification {
+  id            String      @id @default(uuid())
+  patientId     String
+  appointmentId String?
+  type          String
+  // appointment_reminder | appointment_confirmed | appointment_cancelled
+  channel       String      // email | sms | whatsapp
+  status        String      @default("pending")
+  // pending | sent | failed
+  scheduledAt   DateTime    // Cuando debe enviarse
+  sentAt        DateTime?   // Cuando se envio realmente
+  createdAt     DateTime    @default(now())
+
+  patient       Patient     @relation(fields: [patientId], references: [id])
+  appointment   Appointment? @relation(fields: [appointmentId], references: [id])
+
+  @@map("notifications")
 }
