@@ -45,10 +45,10 @@ export class SpecialtyRepository {
         });
         return specialty ? new Specialty(specialty) : null;
     }
-    async update(id: string, specialty: Specialty): Promise<Specialty> {
-        //update the specialty by id
+    async update(specialty: Specialty): Promise<Specialty> {
+        
         const updatedSpecialty = await prisma.specialty.update({
-            where: { id: id },
+            where: { id: specialty.id },
             data: {
                 name: specialty.name,
                 description: specialty.description

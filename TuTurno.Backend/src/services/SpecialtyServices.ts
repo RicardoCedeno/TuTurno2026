@@ -22,9 +22,18 @@ export class SpecialtyServices {
         return specialty;
     }
 
-    async updateSpecialty(id: string, specialty: Specialty): Promise<Specialty> {
-        return this.specialtyRepository.update(id, specialty);
-    }
+    async updateSpecialty(specialty: Specialty): Promise<string[]> {
+        const existingSpecialty = await this.specialtyRepository.findById(specialty.id);
+        if (!existingSpecialty) {
+            return ["la especialización no existe"];
+        }
+        try {
+            await this.specialtyRepository.update(specialty);
+            return [];
+        } catch (error: any) {
+            return [error.message];
+        }
+    } 
 
     async deleteSpecialty(id: string): Promise<string[]> {
         const specialty = await this.specialtyRepository.findById(id);

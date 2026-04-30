@@ -57,12 +57,21 @@ export class SpecialtyController {
     }
 
     update = async (req: Request, res: Response): Promise<void> => {
+        const response: ResponseDto<string[]> = {
+            success: true,
+            errors: [],
+            data: []
+        }
         try {
             const id = req.params.id;
-            const specialty = await this.specialtyService.updateSpecialty(id, req.body);
-            res.status(200).json({ success: true, data: specialty });
+            const messages = await this.specialtyService.updateSpecialty(req.body);
+            response.errors = messages;
+            if (messages.length > 0) response.success = false;
+            res.status(200).json(response);
         } catch (error) {
-            res.status(500).json({ success: false, message: 'Internal server error' });
+            response.success = false;
+            response.errors.push('Ocurrió un error al actualizar la especialidad. Código error: XXX');
+            res.status(500).json(response);
         }
     }
 
