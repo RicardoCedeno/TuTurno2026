@@ -12,7 +12,7 @@ export class DoctorMapper {
             city: doctor.city,
             state: doctor.state,
             country: doctor.country,
-            doctorsSpecialties:doctor.DoctorsSpecialties
+            doctorSpecialties: doctor.DoctorsSpecialties
         };
     }
 
@@ -29,6 +29,6 @@ export class DoctorMapper {
             createdAt: new Date(),
             updatedAt: new Date(),
             DoctorsSpecialties: [],
-    };
+        };
     }
 }
