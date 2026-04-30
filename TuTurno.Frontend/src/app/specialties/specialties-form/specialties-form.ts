@@ -19,15 +19,19 @@ export class SpecialtiesForm {
   mode = input<'create' | 'update' | null>(null);
   private dataServices = inject(DataServices<ISpecialty>);
   formValues: Partial<ISpecialty> = { name: '', description: '' };
+  buttonLabel: string = ''
 
   constructor() {
     effect(() => {
       const currentMode = this.mode();
+
       const selected = this.dataServices.selectedItem();
       if (currentMode === 'update' && selected) {
         this.formValues = { ...selected };
+        this.buttonLabel = 'Actualizar';
       } else if (currentMode === 'create') {
         this.formValues = { name: '', description: '' };
+        this.buttonLabel = 'Agregar';
       } else {
         this.formValues = { name: '', description: '' };
       }
@@ -40,8 +44,11 @@ export class SpecialtiesForm {
       if(this.mode() === 'create'){
         this.createSpecialty.emit(form.value);
       } else if(this.mode() === 'update'){
+        console.log("update")
         const specialty = this.dataServices.getSelectedItem();
+        console.log("specialty", specialty);
         if(specialty){
+          console.log("specialty if", specialty);
           specialty.name = form.value.name;
           specialty.description = form.value.description;
           this.updateSpecialty.emit(specialty);
@@ -51,7 +58,6 @@ export class SpecialtiesForm {
       }
     } else {
       console.log('Form is not valid');
-      form.form.markAllAsTouched();
     }
   }
 

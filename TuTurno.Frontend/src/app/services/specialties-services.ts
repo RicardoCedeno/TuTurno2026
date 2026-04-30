@@ -19,4 +19,7 @@ export class SpecialtiesServices {
   deleteSpecialty(id: string): Observable<IResponse<string[]>> {
     return this.apiServices.delete<IResponse<string[]>>(`/specialties/deleteSpecialty/${id}`, { authenticated: false })
   }
+  updateSpecialty(specialty: ISpecialty): Observable<IResponse<ISpecialty>> {
+    return this.apiServices.put<IResponse<ISpecialty>>('/specialties/updateSpecialty/${specialty.id}', specialty, { authenticated: false })
+  }
 }

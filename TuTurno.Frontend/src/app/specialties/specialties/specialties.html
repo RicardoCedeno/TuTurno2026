@@ -34,8 +34,8 @@
     @case ('update') {
       <app-specialties-form
         [mode]="'update'"
-        (updateSpecialty)="updateSpecialty($event)"
         (cancel)="onCancel('list')"
+        (updateSpecialty)="updateSpecialty($event)"
       ></app-specialties-form>
     }
     @default {

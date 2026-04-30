@@ -24,7 +24,7 @@ export class Specialties {
   private dataServices = inject(DataServices<ISpecialty>);
   constructor() {
     this.mode.set('list');
-    
+
   }
 
   getSpecialties() {
@@ -44,16 +44,16 @@ export class Specialties {
     });
   }
 
-  onAddSpecialty(){
+  onAddSpecialty() {
     this.dataServices.clearSelectedItem();
     this.mode.set('create');
   }
 
-  createSpecialty(specialty: ISpecialty){
+  createSpecialty(specialty: ISpecialty) {
     console.log(specialty);
     this.specialtiesServices.createSpecialty(specialty).subscribe({
       next: (response) => {
-        if(response.success){
+        if (response.success) {
           this.alertsService.showSuccessAlert('Especialidad creada correctamente');
           this.mode.set('list');
           this.getSpecialties();
@@ -70,7 +70,7 @@ export class Specialties {
     });
   }
 
-  onCancel(mode: 'list' | 'create' | 'update'){
+  onCancel(mode: 'list' | 'create' | 'update') {
     this.mode.set(mode);
     if (mode === 'list') {
       this.dataServices.clearSelectedItem();
@@ -78,13 +78,13 @@ export class Specialties {
   }
 
 
-  deleteSpecialty(id: string){
+  deleteSpecialty(id: string) {
     this.alertsService.showQuestionAlert('¿Estás seguro de querer eliminar esta especialidad?').then((result: any) => {
-      if(result.isConfirmed){
+      if (result.isConfirmed) {
         this.loading.set(true);
         this.specialtiesServices.deleteSpecialty(id).subscribe({
           next: (response) => {
-            if(response.success){
+            if (response.success) {
               this.alertsService.showSuccessAlert('Especialidad eliminada correctamente');
               this.getSpecialties();
             } else {
@@ -104,14 +104,38 @@ export class Specialties {
     });
   }
 
-  onEditSpecialty(specialty: ISpecialty){
+  onEditSpecialty(specialty: ISpecialty) {
     this.dataServices.setSelectedItem(specialty);
     this.mode.set('update');
+
   }
 
-  updateSpecialty(specialty: ISpecialty){
-    console.log('Actualizando especialidad', specialty);
-    this.mode.set('list');
-    this.dataServices.clearSelectedItem();
+  updateSpecialty(specialty: ISpecialty) {
+    console.log("updateSpecialty", specialty);
+    this.alertsService.showQuestionAlert('¿Estás seguro de querer actualizar esta especialidad?').then((result: any) => {
+      if (result.isConfirmed) {
+        this.loading.set(true);
+        this.specialtiesServices.updateSpecialty(specialty).subscribe({
+          next: (response) => {
+            console.log("response", response);
+            if (response.success) {
+              this.alertsService.showSuccessAlert('Especialidad actualizada correctamente');
+              this.mode.set('list');
+              this.getSpecialties();
+            } else {
+              this.alertsService.showErrorAlert(`Error al actualizar la especialidad: ${JSON.stringify(response.errors)}`);
+            }
+          },
+          error: (error: any) => {
+            this.alertsService.showErrorAlert(`Error al actualizar la especialidad: ${JSON.stringify(error.errors)}`);
+          },
+          complete: () => {
+            this.loading.set(false);
+          }
+        });
+      } else {
+        this.alertsService.showWarningAlert('No se actualizó la especialidad');
+      }
+    });
   }
 }
