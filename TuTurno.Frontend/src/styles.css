@@ -1,5 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import "tailwindcss";
 
 
@@ -13,26 +11,51 @@
     --color-text-muted: #64748b;     /* Slate 500 */
     --color-border: #e2e8f0;         /* Slate 200 */
   }
+
+  .login-container {
+    @apply min-h-screen flex items-center justify-center bg-[var(--color-bg-main)] overflow-hidden;
+  }
+
+  .login-split-layout {
+    @apply flex w-full h-screen max-w-none bg-white overflow-hidden;
+  }
+
+  .login-form-side {
+    @apply w-full lg:w-[40%] flex flex-col justify-center px-8 md:px-16 lg:px-20 py-8 z-10 bg-white h-full overflow-hidden shadow-[20px_0_50px_rgba(0,0,0,0.05)];
+  }
+
+  .login-image-side {
+    @apply hidden lg:block lg:w-[60%] relative h-full bg-sky-50 overflow-hidden;
+  }
+
+  .login-image-side .carousel-container {
+    @apply absolute inset-0 w-full h-full scale-105;
+  }
+
+  .login-image-side .carousel-image {
+    @apply absolute inset-0 w-full h-full object-cover opacity-0 transition-all duration-[2000ms] ease-in-out scale-100;
+  }
+
+  .login-image-side .carousel-image.active {
+    @apply opacity-100 scale-105;
+  }
+
+  .login-input {
+    @apply w-full pl-12 pr-5 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-4 focus:ring-[var(--color-primary)]/10 focus:border-[var(--color-primary)] focus:bg-white transition-all duration-300 outline-none font-medium text-sm;
+  }
+
+  .login-button {
+    @apply w-full py-3 bg-gradient-to-br from-[var(--color-primary)] via-[var(--color-primary)] to-[var(--color-primary-dark)] text-white font-bold rounded-xl shadow-lg shadow-sky-200/50 hover:shadow-xl hover:shadow-sky-300/50 hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 text-sm;
+  }
 }
 
 @layer utilities {
   .particles-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
+    @apply fixed top-0 left-0 w-full h-full pointer-events-none z-0 overflow-hidden;
   }
 
   .particle {
-    position: absolute;
-    background: var(--color-primary);
-    border-radius: 50%;
-    opacity: 0.2;
-    filter: blur(1px);
+    @apply absolute bg-[var(--color-primary)] rounded-full opacity-20 blur-[1px];
     animation: float-up linear infinite;
   }
 

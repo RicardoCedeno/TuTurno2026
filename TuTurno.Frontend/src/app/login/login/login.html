@@ -1,0 +1,136 @@
+<div class="login-split-layout">
+    <!-- Left Side: Form -->
+    <div class="login-form-side relative">
+        <!-- Decorative subtle background element -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-sky-50 rounded-bl-full opacity-50 -z-10"></div>
+        
+        <!-- Brand Section -->
+        <div class="mb-6">
+            <div class="inline-flex items-center gap-3 mb-3 group cursor-default">
+                <div class="p-2 bg-white rounded-2xl shadow-sm border border-gray-100 group-hover:shadow-md group-hover:border-sky-100 transition-all duration-500">
+                    <svg class="w-6 h-6 text-[var(--color-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-xl font-black text-[var(--color-text-main)] tracking-tighter">TuTurno</h1>
+            </div>
+            <h2 class="text-xl font-extrabold text-[var(--color-text-main)] tracking-tight">Bienvenido</h2>
+            <p class="text-[var(--color-text-muted)] text-xs font-medium">Ingresa tus credenciales para acceder.</p>
+        </div>
+
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="space-y-4">
+            <!-- Email Field -->
+            <div class="space-y-1.5">
+                <label class="text-[10px] uppercase tracking-wider font-bold text-[var(--color-text-muted)] ml-1">Correo Electrónico</label>
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-300 group-focus-within:text-[var(--color-primary)] transition-colors duration-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206"></path>
+                        </svg>
+                    </div>
+                    <input type="email" name="email" [ngModel]="email()" (ngModelChange)="email.set($event)" required
+                        placeholder="ejemplo@correo.com"
+                        class="login-input !py-2.5">
+                </div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="space-y-1.5">
+                <div class="flex items-center justify-between ml-1">
+                    <label class="text-[10px] uppercase tracking-wider font-bold text-[var(--color-text-muted)]">Contraseña</label>
+                    <a href="#" class="text-[9px] font-bold text-[var(--color-primary)] hover:underline decoration-2 underline-offset-4 transition-all">¿Olvidaste tu contraseña?</a>
+                </div>
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-300 group-focus-within:text-[var(--color-primary)] transition-colors duration-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <input [type]="showPassword() ? 'text' : 'password'" name="password" [ngModel]="password()" (ngModelChange)="password.set($event)" required
+                        placeholder="••••••••"
+                        class="login-input !py-2.5">
+                    <button type="button" (click)="togglePassword()" 
+                        class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-300 hover:text-[var(--color-primary)] transition-colors duration-300">
+                        <svg *ngIf="!showPassword()" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        <svg *ngIf="showPassword()" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.882 9.882L5.146 5.147m13.71 13.71l-4.738-4.736m-4.568-4.568L15.364 2.636"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Remember Me -->
+            <div class="flex items-center ml-1">
+                <input type="checkbox" id="remember" class="w-3.5 h-3.5 rounded border-gray-200 text-[var(--color-primary)] focus:ring-[var(--color-primary)]/20 transition-all cursor-pointer">
+                <label for="remember" class="ml-2 text-[10px] font-bold text-[var(--color-text-muted)] cursor-pointer select-none">Recordarme</label>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" [disabled]="!loginForm.form.valid || isLoading()"
+                class="login-button mt-1 !py-2.5">
+                <svg *ngIf="isLoading()" class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>{{ isLoading() ? 'Iniciando...' : 'Entrar al Panel' }}</span>
+            </button>
+        </form>
+
+        <!-- Register Link -->
+        <div class="mt-6 text-center">
+            <p class="text-[var(--color-text-muted)] text-[11px] font-medium">
+                ¿No tienes cuenta? 
+                <a href="#" class="text-[var(--color-primary)] font-bold hover:text-[var(--color-primary-dark)] transition-colors ml-1 inline-flex items-center gap-1 group">
+                    Regístrate
+                    <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-auto pt-6 flex items-center justify-between border-t border-gray-50">
+            <p class="text-[var(--color-text-muted)] text-[9px] font-bold opacity-40 uppercase tracking-widest">
+                &copy; 2026 TuTurno
+            </p>
+            <div class="flex gap-3">
+                <a href="#" class="text-[9px] font-bold text-[var(--color-text-muted)] opacity-40 hover:opacity-100 transition-opacity uppercase tracking-widest">Privacidad</a>
+                <a href="#" class="text-[9px] font-bold text-[var(--color-text-muted)] opacity-40 hover:opacity-100 transition-opacity uppercase tracking-widest">Soporte</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side: Image Carousel -->
+    <div class="login-image-side relative">
+        <div class="carousel-container">
+            <img *ngFor="let img of images; let i = index" 
+                 [src]="img" 
+                 [class.active]="currentImageIndex() === i"
+                 class="carousel-image"
+                 alt="TuTurno Login Background">
+        </div>
+        
+        <!-- Overlay for better text contrast -->
+        <div class="absolute inset-0 bg-gradient-to-tr from-[var(--color-primary-dark)]/80 via-[var(--color-primary-dark)]/20 to-transparent z-10"></div>
+        
+        <!-- Content on Image -->
+        <div class="absolute bottom-16 left-16 right-16 text-white z-20 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <div class="w-12 h-1 bg-white/30 rounded-full mb-6"></div>
+            <h3 class="text-4xl font-black leading-[1.1] mb-4 drop-shadow-2xl tracking-tight">Simplifica la gestión de tus citas médicas.</h3>
+            <p class="text-sky-100 font-medium text-lg opacity-90 max-w-md drop-shadow-lg">La plataforma líder diseñada específicamente para profesionales de la salud modernos.</p>
+        </div>
+        
+        <!-- Carousel Indicators -->
+        <div class="absolute bottom-8 left-16 flex gap-3 z-20">
+            <div *ngFor="let img of images; let i = index"
+                 [class.w-10]="currentImageIndex() === i"
+                 [class.bg-white]="currentImageIndex() === i"
+                 [class.w-2]="currentImageIndex() !== i"
+                 [class.bg-white/30]="currentImageIndex() !== i"
+                 class="h-1 rounded-full transition-all duration-700 ease-out">
+            </div>
+        </div>
+    </div>
+</div>

@@ -19,7 +19,8 @@
     <div class="particle" style="width: 10px; height: 10px; left: 82%; animation-duration: 27s; animation-delay: -1s;"></div>
   </div>
 
-  <header class="h-16 bg-[var(--color-bg-sidebar)] border-b border-[var(--color-border)] flex items-center justify-between px-4 sticky top-0 z-50">
+  <!-- Header -->
+  <header *ngIf="!isLoginPage()" class="h-16 bg-[var(--color-bg-sidebar)] border-b border-[var(--color-border)] flex items-center justify-between px-4 sticky top-0 z-50">
     <div class="flex items-center gap-4">
       <button (click)="isSidebarOpen = !isSidebarOpen" class="lg:hidden p-2 hover:bg-gray-100 rounded-lg">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
@@ -43,9 +44,9 @@
 
   <div class="flex flex-1 overflow-hidden">
     
-    <div *ngIf="isSidebarOpen" (click)="isSidebarOpen = false" class="fixed inset-0 bg-black/20 z-40 lg:hidden backdrop-blur-sm"></div>
+    <div *ngIf="isSidebarOpen && !isLoginPage()" (click)="isSidebarOpen = false" class="fixed inset-0 bg-black/20 z-40 lg:hidden backdrop-blur-sm"></div>
 
-    <aside [class.translate-x-0]="isSidebarOpen" [class.-translate-x-full]="!isSidebarOpen"
+    <aside *ngIf="!isLoginPage()" [class.translate-x-0]="isSidebarOpen" [class.-translate-x-full]="!isSidebarOpen"
       class="fixed inset-y-0 left-0 w-64 bg-[var(--color-bg-sidebar)] border-r border-[var(--color-border)] z-40 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 flex flex-col">
       
       <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
@@ -81,8 +82,8 @@
       </div>
     </aside>
 
-    <main class="flex-1 overflow-y-auto p-6 md:p-8">
-      <div class="max-w-7xl mx-auto">
+    <main class="flex-1 overflow-y-auto" [class.p-6]="!isLoginPage()" [class.md:p-8]="!isLoginPage()">
+      <div [class.max-w-7xl]="!isLoginPage()" [class.mx-auto]="!isLoginPage()">
         <router-outlet></router-outlet>
       </div>
     </main>
