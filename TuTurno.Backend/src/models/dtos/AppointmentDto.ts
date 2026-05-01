@@ -12,7 +12,7 @@ export interface AppointmentDto {
     date: Date;
     duration: number;
     status: string;
-    notes?: string;
+    notes?: string | null;
     createdAt?: Date;
     updatedAt?: Date;
 

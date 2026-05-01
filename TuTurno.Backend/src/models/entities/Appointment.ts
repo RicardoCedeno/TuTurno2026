@@ -12,7 +12,7 @@ export class Appointment {
     date: Date;
     duration: number;
     status: string;
-    notes?: string;
+    notes?: string | null;
     createdAt?: Date;
     updatedAt?: Date;
 

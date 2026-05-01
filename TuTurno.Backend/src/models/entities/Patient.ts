@@ -8,10 +8,10 @@ export class Patient {
     phone: string;
     birthDate: Date;
     gender: string; // "male" | "female" | "other"
-    address?: string;
-    city?: string;
-    state?: string;
-    country?: string;
+    address?: string | null | undefined;
+    city?: string | null | undefined;
+    state?: string | null | undefined;
+    country?: string | null | undefined;
     active?: boolean;
     createdAt?: Date;
     updatedAt?: Date;

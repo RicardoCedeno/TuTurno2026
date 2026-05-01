@@ -3,6 +3,7 @@ import userRoutes from './routes/userRoutes';
 import specialtyRoutes from './routes/specialtyRoutes';
 import cors from 'cors';
 import doctorRoutes from './routes/DoctorRoutes';
+import patientRoutes from './routes/PatientRoutes';
 
 const app: Application = express();
 
@@ -29,6 +30,7 @@ app.get('/health', (_req: Request, res: Response) => {
 app.use('/api/users', userRoutes);
 app.use('/api/specialties', specialtyRoutes);
 app.use('/api/doctors', doctorRoutes);
+app.use('/api/patients', patientRoutes);
 
 // ─── 404 Handler ────────────────────────────────────────────────────────────
 app.use((_req: Request, res: Response) => {

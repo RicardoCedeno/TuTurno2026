@@ -1,0 +1,103 @@
+<div class="min-h-screen bg-[#f6faff] p-4 md:p-8 font-['Manrope'] flex justify-center">
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)"
+        class="w-full max-w-4xl bg-white rounded-2xl shadow-lg px-4 py-8 md:p-10 space-y-8">
+        <div class="flex flex-col gap-2">
+            <h2 class="text-2xl font-semibold text-[var(--color-primary-dark)]">
+                {{ mode() === 'update' ? 'Actualizá el paciente' : 'Nuevo paciente' }}
+            </h2>
+            <p class="text-sm text-[var(--color-text-muted)]">
+                Completá los datos del paciente para dejarlo listo en el sistema.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="">
+                <label for="name"
+                    class="block text-sm font-semibold text-[#3e4850] mb-1 uppercase tracking-wider">Documento de identidad</label>
+                <input type="text" id="name" name="name" required [(ngModel)]="formValues.id"
+                    class="w-full h-12 px-4 rounded-lg border border-[#cbd5f5] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9] transition"
+                    placeholder="Ej. María López" />
+            </div>
+
+            <div class="">
+                <label for="name"
+                    class="block text-sm font-semibold text-[#3e4850] mb-1 uppercase tracking-wider">Nombre
+                    completo</label>
+                <input type="text" id="name" name="name" required [(ngModel)]="formValues.name"
+                    class="w-full h-12 px-4 rounded-lg border border-[#cbd5f5] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9] transition"
+                    placeholder="Ej. María López" />
+            </div>
+
+            <div>
+                <label for="email"
+                    class="block text-sm font-semibold text-[#3e4850] mb-1 uppercase tracking-wider">Correo</label>
+                <input type="email" id="email" name="email" required [(ngModel)]="formValues.email"
+                    class="w-full h-12 px-4 rounded-lg border border-[#cbd5f5] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9] transition"
+                    placeholder="correo@ejemplo.com" />
+            </div>
+
+            <div>
+                <label for="phone"
+                    class="block text-sm font-semibold text-[#3e4850] mb-1 uppercase tracking-wider">Teléfono</label>
+                <input type="tel" id="phone" name="phone" required [(ngModel)]="formValues.phone"
+                    class="w-full h-12 px-4 rounded-lg border border-[#cbd5f5] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9] transition"
+                    placeholder="+54 9 11 1234-5678" />
+            </div>
+
+            <div>
+                <label for="birthDate"
+                    class="block text-sm font-semibold text-[#3e4850] mb-1 uppercase tracking-wider">Fecha de
+                    nacimiento</label>
+                <input type="date" id="birthDate" name="birthDate" required [(ngModel)]="formValues.birthDate"
+                    class="w-full h-12 px-4 rounded-lg border border-[#cbd5f5] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9] transition" />
+            </div>
+
+            <div>
+                <label for="gender"
+                    class="block text-sm font-semibold text-[#3e4850] mb-1 uppercase tracking-wider">Género</label>
+                <select id="gender" name="gender" required [(ngModel)]="formValues.gender"
+                    class="w-full h-12 px-4 rounded-lg border border-[#cbd5f5] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9] transition appearance-none">
+                    <option value="" disabled>Seleccione...</option>
+                    <option value="male">Masculino</option>
+                    <option value="female">Femenino</option>
+                    <option value="other">Otro</option>
+                </select>
+            </div>
+
+            <div class="col-span-2">
+                <label for="address"
+                    class="block text-sm font-semibold text-[#3e4850] mb-1 uppercase tracking-wider">Dirección</label>
+                <input type="text" id="address" name="address" [(ngModel)]="formValues.address"
+                    class="w-full h-12 px-4 rounded-lg border border-[#cbd5f5] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9] transition"
+                    placeholder="Calle y número" />
+            </div>
+
+            <div>
+                <label for="city"
+                    class="block text-sm font-semibold text-[#3e4850] mb-1 uppercase tracking-wider">Ciudad</label>
+                <input type="text" id="city" name="city" [(ngModel)]="formValues.city"
+                    class="w-full h-12 px-4 rounded-lg border border-[#cbd5f5] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9] transition"
+                    placeholder="Ciudad" />
+            </div>
+
+            <div>
+                <label for="state"
+                    class="block text-sm font-semibold text-[#3e4850] mb-1 uppercase tracking-wider">Provincia</label>
+                <input type="text" id="state" name="state" [(ngModel)]="formValues.state"
+                    class="w-full h-12 px-4 rounded-lg border border-[#cbd5f5] focus:outline-none focus:ring-2 focus:ring-[#0ea5e9] transition"
+                    placeholder="Provincia / Estado" />
+            </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t">
+            <button type="button" (click)="onCancel()"
+                class="px-6 py-2 rounded-lg font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+                Cancelar
+            </button>
+            <button type="submit" [disabled]="!form.valid"
+                class="px-6 py-2 rounded-lg font-medium bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm">
+                {{ buttonLabel }}
+            </button>
+        </div>
+    </form>
+</div>

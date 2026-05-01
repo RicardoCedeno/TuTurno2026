@@ -134,3 +134,83 @@
         </div>
     </div>
 </div>
+
+<tutu-calendar
+  [events]="events()"
+  [view]="'day'"
+  (eventCreate)="onCreate($event)"
+  (eventUpdate)="onUpdate($event)"
+  (eventDelete)="onDelete($event)"
+  (eventClick)="openEdit($event)"
+/>
+
+@if (showCreateModal()) {
+    <div class="modal-backdrop">
+      <form class="modal-card" (ngSubmit)="saveAppointment()">
+        <h2>Nueva cita</h2>
+  
+        <input
+          name="title"
+          [(ngModel)]="form.title"
+          placeholder="Titulo de la cita"
+        />
+  
+        <input
+          name="color"
+          type="color"
+          [(ngModel)]="form.color"
+        />
+  
+        <select name="status" [(ngModel)]="form.status">
+          <option value="pending">Pendiente</option>
+          <option value="confirmed">Confirmada</option>
+          <option value="cancelled">Cancelada</option>
+        </select>
+
+        <label>
+            Hora inicio
+            <input type="time" [ngModel]="startTime()" (ngModelChange)="startTime.set($event)" required />
+          </label>
+          <label>
+            Hora fin
+            <input type="time" [ngModel]="endTime()" (ngModelChange)="endTime.set($event)" required />
+          </label>
+  
+        <div class="modal-actions">
+          <button type="button" (click)="showCreateModal.set(false)">Cancelar</button>
+          <button type="submit">Guardar</button>
+        </div>
+      </form>
+    </div>
+  }
+
+  @if (editingEvent()) {
+    <div class="modal-backdrop">
+      <form class="modal-card" (ngSubmit)="saveEdit()">
+        <h2>Editar cita</h2>
+  
+        <input
+          name="editTitle"
+          [(ngModel)]="editForm.title"
+          placeholder="Titulo de la cita"
+        />
+  
+        <input
+          name="editColor"
+          type="color"
+          [(ngModel)]="editForm.color"
+        />
+  
+        <select name="editStatus" [(ngModel)]="editForm.status">
+          <option value="pending">Pendiente</option>
+          <option value="confirmed">Confirmada</option>
+          <option value="cancelled">Cancelada</option>
+        </select>
+  
+        <div class="modal-actions">
+          <button type="button" (click)="editingEvent.set(null)">Cancelar</button>
+          <button type="submit">Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  }

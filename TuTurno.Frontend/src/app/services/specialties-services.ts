@@ -13,13 +13,13 @@ export class SpecialtiesServices {
   getSpecialties(): Observable<IResponse<ISpecialty[]>> {
     return this.apiServices.get<IResponse<ISpecialty[]>>('/specialties/getAllSpecialties', { authenticated: false })
   }
-  createSpecialty(specialty: ISpecialty): Observable<IResponse<ISpecialty>> {
-    return this.apiServices.post<IResponse<ISpecialty>>('/specialties/createSpecialty', specialty, { authenticated: false })
+  createSpecialty(specialty: ISpecialty): Observable<IResponse<string[]>> {
+    return this.apiServices.post<IResponse<string[]>>('/specialties/createSpecialty', specialty, { authenticated: false })
   }
   deleteSpecialty(id: string): Observable<IResponse<string[]>> {
     return this.apiServices.delete<IResponse<string[]>>(`/specialties/deleteSpecialty/${id}`, { authenticated: false })
   }
-  updateSpecialty(specialty: ISpecialty): Observable<IResponse<ISpecialty>> {
-    return this.apiServices.put<IResponse<ISpecialty>>('/specialties/updateSpecialty/${specialty.id}', specialty, { authenticated: false })
+  updateSpecialty(specialty: ISpecialty): Observable<IResponse<string[]>> {
+    return this.apiServices.put<IResponse<string[]>>(`/specialties/updateSpecialty/${specialty.id}`, specialty, { authenticated: false })
   }
 }
