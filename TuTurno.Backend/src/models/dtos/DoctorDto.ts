@@ -11,5 +11,5 @@ export interface DoctorDto {
     city: string;
     state: string;
     country: string;
-    doctorSpecialties?: DoctorSpecialtyDto[];
+    doctorsSpecialties?: DoctorSpecialtyDto[];
 }

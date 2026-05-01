@@ -1,7 +1,7 @@
 //servicio para specialty
 import { SpecialtyRepository } from "../repositories/SpeciatyRepository";
 import { Specialty } from "../models/entities/Specialty";
-import {SpecialtyMapper} from "../models/mappers/specialtyMapper";
+import { SpecialtyMapper } from "../models/mappers/specialtyMapper";
 import { SpecialtyDto } from "../models/dtos/SpecialtyDto";
 import { v4 as uuidv4 } from 'uuid';
 

@@ -19,7 +19,7 @@ export class SpecialtyRepository {
     async findAll(): Promise<Specialty[]> {
         const specialties = await prisma.specialty.findMany({
             include: {
-                doctors: true
+                doctorsSpecialties: true
             }
         });
         return specialties.map((s: typeof specialties[number]) => new Specialty(s));

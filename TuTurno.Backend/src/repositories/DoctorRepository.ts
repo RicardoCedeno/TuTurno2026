@@ -6,9 +6,17 @@ export class DoctorRepository {
     async create(doctor: Doctor): Promise<Doctor> {
         try {
             const newDoctor = await prisma.doctor.create({
-                data: doctor,
+                data: {
+                    name: doctor.name,
+                    email: doctor.email,
+                    phone: doctor.phone,
+                    address: doctor.address,
+                    city: doctor.city,
+                    state: doctor.state,
+                    country: doctor.country,
+                },
                 include: {
-                    specialties: true,
+                    doctorsSpecialties: true,
                 },
             });
 
@@ -21,7 +29,7 @@ export class DoctorRepository {
     async findAll(): Promise<Doctor[]> {
         const doctors = await prisma.doctor.findMany({
             include: {
-                specialties: true,
+                doctorsSpecialties: true,
             },
         });
 
@@ -32,7 +40,7 @@ export class DoctorRepository {
         const doctor = await prisma.doctor.findUnique({
             where: { id },
             include: {
-                specialties: true,
+                doctorsSpecialties: true,
             },
         });
 
@@ -43,7 +51,7 @@ export class DoctorRepository {
         const doctor = await prisma.doctor.findFirst({
             where: { email },
             include: {
-                specialties: true,
+                doctorsSpecialties: true,
             },
         });
 
@@ -63,7 +71,7 @@ export class DoctorRepository {
                 country: doctor.country,
             },
             include: {
-                specialties: true,
+                doctorsSpecialties: true,
             },
         });
 

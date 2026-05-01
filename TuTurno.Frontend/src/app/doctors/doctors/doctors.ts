@@ -1,45 +1,43 @@
-import { Component, inject, signal } from '@angular/core';
-import { SpecialtiesServices } from '../../services/specialties-services';
-import { ISpecialty } from '../../models/specialty';
-import { AlertsService } from '../../services/alerts-service';
+import { Component, inject, signal, OnInit } from '@angular/core';
+import { DoctorsList } from '../doctors-list/doctors-list';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { DoctorsForm } from '../doctors-form/doctors-form';
+import { AlertsService } from '../../services/alerts-service';
+import { DataServices } from '../../services/data-services';
+import { IDoctor } from '../../models/doctor';
+import { DoctorServices } from '../../services/doctor-services';
 
 @Component({
   selector: 'app-doctors',
-  imports: [CommonModule, FormsModule, DoctorsForm],
-  standalone: true,
+  imports: [DoctorsList, CommonModule, DoctorsForm],
   templateUrl: './doctors.html',
   styleUrl: './doctors.css',
+  standalone: true,
 })
-export class Doctors {
-  private specialtiesServices = inject(SpecialtiesServices);
-  specialties: ISpecialty[] = [];
+export class Doctors implements OnInit {
+  private doctorServices = inject(DoctorServices);
+  doctors = signal<IDoctor[]>([]);
   loading = signal<boolean>(false);
-  selectedSpecialtyId = signal<string | null>(null);
   mode = signal<'list' | 'create' | 'update' | null>('list');
   private alertsService = inject(AlertsService);
-  
-  constructor() {
-  }
+  private dataServices = inject(DataServices<IDoctor>);
 
   ngOnInit() {
-    this.getSpecialties();
+    this.getDoctors();
   }
 
-  getSpecialties() {
+  getDoctors() {
     this.loading.set(true);
-    this.specialtiesServices.getSpecialties().subscribe({
+    this.doctorServices.getDoctors().subscribe({
       next: (response) => {
-        if(response.success){
-          this.specialties = response.data;
+        if (response.success) {
+          this.doctors.set(response.data);
         } else {
-          this.alertsService.showErrorAlert(response.errors.join(', '));
+          this.alertsService.showErrorAlert(`Error al obtener médicos: ${response.errors.join(', ')}`);
         }
       },
       error: (error: any) => {
-        this.alertsService.showErrorAlert(error.message);
+        this.alertsService.showErrorAlert(`Error al obtener médicos: ${error.message}`);
       },
       complete: () => {
         this.loading.set(false);
@@ -47,17 +45,91 @@ export class Doctors {
     });
   }
 
-  onConsultar() {
-    if (!this.selectedSpecialtyId()) {
-      this.alertsService.showErrorAlert('Por favor selecciona una especialidad');
-      return;
-    }
-    console.log('Consultando médicos para la especialidad:', this.selectedSpecialtyId());
-    // Aquí iría la lógica para filtrar la lista de médicos
+  onAddDoctor() {
+    this.dataServices.clearSelectedItem();
+    this.mode.set('create');
   }
 
-  onNuevoMedico() {
-    console.log('Navegando a la creación de nuevo médico');
-    this.mode.set('create');
+  createDoctor(doctor: IDoctor) {
+    console.log(doctor);
+    this.loading.set(true);
+    this.doctorServices.createDoctor(doctor).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.alertsService.showSuccessAlert('Médico creado correctamente');
+          this.mode.set('list');
+          this.getDoctors();
+        } else {
+          this.alertsService.showErrorAlert(`Error al crear el médico: ${response.errors.join(', ')}`);
+        }
+      },
+      error: (error: any) => {
+        this.alertsService.showErrorAlert(`Error al crear el médico: ${error.message}`);
+      },
+      complete: () => {
+        this.loading.set(false);
+      }
+    });
+  }
+
+  onCancel(mode: 'list' | 'create' | 'update') {
+    this.mode.set(mode);
+    if (mode === 'list') {
+      this.dataServices.clearSelectedItem();
+    }
+  }
+
+  deleteDoctor(id: string) {
+    this.alertsService.showQuestionAlert('¿Estás seguro de querer eliminar este médico?').then((result: any) => {
+      if (result.isConfirmed) {
+        this.loading.set(true);
+        this.doctorServices.deleteDoctor(id).subscribe({
+          next: (response) => {
+            if (response.success) {
+              this.alertsService.showSuccessAlert('Médico eliminado correctamente');
+              this.getDoctors();
+            } else {
+              this.alertsService.showErrorAlert(`Error al eliminar el médico: ${response.errors.join(', ')}`);
+            }
+          },
+          error: (error: any) => {
+            this.alertsService.showErrorAlert(`Error al eliminar el médico: ${error.message}`);
+          },
+          complete: () => {
+            this.loading.set(false);
+          }
+        });
+      }
+    });
+  }
+
+  onEditDoctor(doctor: IDoctor) {
+    this.dataServices.setSelectedItem(doctor);
+    this.mode.set('update');
+  }
+
+  updateDoctor(doctor: IDoctor) {
+    this.alertsService.showQuestionAlert('¿Estás seguro de querer actualizar este médico?').then((result: any) => {
+      if (result.isConfirmed) {
+        this.loading.set(true);
+        this.doctorServices.updateDoctor(doctor).subscribe({
+          next: (response) => {
+            if (response.success) {
+              this.alertsService.showSuccessAlert('Médico actualizado correctamente');
+              this.mode.set('list');
+              this.getDoctors();
+            } else {
+              this.alertsService.showErrorAlert(`Error al actualizar el médico: ${response.errors.join(', ')}`);
+            }
+          },
+          error: (error: any) => {
+            this.alertsService.showErrorAlert(`Error al actualizar el médico: ${error.message}`);
+          },
+          complete: () => {
+            this.loading.set(false);
+          }
+        });
+      }
+    });
   }
 }

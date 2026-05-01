@@ -1,9 +1,9 @@
 import { DoctorRepository } from "../repositories/DoctorRepository";
 import { Doctor } from "../models/entities/Doctor";
-import { DoctorSpecialtyRepository } from "../repositories/DoctorSpecialtyRepository";
-import { DoctorMapper } from "../models/mappers/doctorMapper";
 import { DoctorDto } from "../models/dtos/DoctorDto";
 import { v4 as uuidv4 } from 'uuid';
+import { DoctorSpecialtyRepository } from "../repositories/DoctorSpecialtyRepository";
+import { DoctorMapper } from "../models/mappers/doctorMapper";
 
 export class DoctorServices {
     private doctorRepository: DoctorRepository;

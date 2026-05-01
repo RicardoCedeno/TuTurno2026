@@ -13,7 +13,7 @@ export class Doctor{
     updatedAt?: Date;
 
     // ---------------------- Navegación ----------------------
-    DoctorsSpecialties?: DoctorSpecialty[] = [];
+    doctorsSpecialties?: DoctorSpecialty[] = [];
 
 
 
@@ -28,6 +28,6 @@ export class Doctor{
         this.country = data.country;
         this.createdAt = data.createdAt;
         this.updatedAt = data.updatedAt;
-        this.DoctorsSpecialties = data.DoctorsSpecialties;
+        this.doctorsSpecialties = data.doctorsSpecialties;
     }
 }
