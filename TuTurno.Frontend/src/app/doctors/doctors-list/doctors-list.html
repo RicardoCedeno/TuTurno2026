@@ -41,7 +41,7 @@
               </td>
               <td class="px-6 py-5">
                 <div class="flex flex-wrap gap-1">
-                  @for (ds of doctor.doctorSpecialties; track ds.specialtyId) {
+                  @for (ds of doctor.doctorsSpecialties; track ds.specialtyId) {
                     <span class="px-2 py-0.5 text-xs rounded-full bg-sky-100 text-sky-700 border border-sky-200">
                       {{ ds.specialty?.name }}
                     </span>

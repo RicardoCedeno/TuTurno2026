@@ -28,7 +28,7 @@ export class DoctorsForm implements OnInit {
     city: '',
     state: '',
     country: '',
-    doctorSpecialties: []
+    doctorsSpecialties: []
   };
   
   specialties = signal<ISpecialty[]>([]);
@@ -68,7 +68,7 @@ export class DoctorsForm implements OnInit {
       city: '',
       state: '',
       country: '',
-      doctorSpecialties: []
+      doctorsSpecialties: []
     };
   }
 
@@ -86,7 +86,7 @@ export class DoctorsForm implements OnInit {
   }
 
   toggleSpecialty(specialty: ISpecialty) {
-    const current = this.formValues.doctorSpecialties || [];
+    const current = this.formValues.doctorsSpecialties || [];
     const index = current.findIndex(ds => ds.specialtyId === specialty.id);
     
     if (index > -1) {
@@ -98,11 +98,11 @@ export class DoctorsForm implements OnInit {
         specialty: specialty 
       } as any);
     }
-    this.formValues.doctorSpecialties = [...current];
+    this.formValues.doctorsSpecialties = [...current];
   }
 
   isSpecialtySelected(specialtyId: string): boolean {
-    return !!this.formValues.doctorSpecialties?.some(ds => ds.specialtyId === specialtyId);
+    return !!this.formValues.doctorsSpecialties?.some(ds => ds.specialtyId === specialtyId);
   }
 
   onSubmit(form: NgForm) {

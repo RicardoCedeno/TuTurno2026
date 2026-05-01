@@ -2,15 +2,15 @@ import { DoctorRepository } from "../repositories/DoctorRepository";
 import { Doctor } from "../models/entities/Doctor";
 import { DoctorDto } from "../models/dtos/DoctorDto";
 import { v4 as uuidv4 } from 'uuid';
-import { DoctorSpecialtyRepository } from "../repositories/DoctorSpecialtyRepository";
+import { DoctorSpecialtyServices } from "./DoctorSpecialtyServices";
 import { DoctorMapper } from "../models/mappers/doctorMapper";
 
 export class DoctorServices {
     private doctorRepository: DoctorRepository;
-    private doctorSpecialtyRepository: DoctorSpecialtyRepository;
+    private doctorSpecialtyService: DoctorSpecialtyServices;
     constructor() {
         this.doctorRepository = new DoctorRepository();
-        this.doctorSpecialtyRepository = new DoctorSpecialtyRepository();
+        this.doctorSpecialtyService = new DoctorSpecialtyServices();
     }
 
     async getAllDoctors(): Promise<Doctor[]> {
@@ -31,13 +31,17 @@ export class DoctorServices {
         if (!doctor.name || !doctor.email || !doctor.phone || !doctor.address || !doctor.city || !doctor.state || !doctor.country) {
             return ["nombre, email, teléfono, dirección, ciudad, estado y país son requeridos"];
         }
-        const doctorEntity = DoctorMapper.toEntity({ ...doctor, id: uuidv4() });
+        const doctorEntity = DoctorMapper.toEntity(doctor);
         try {
             const existingDoctor = await this.doctorRepository.findById(doctorEntity.id);
             if (existingDoctor) {
                 return ["ya existe un doctor con el mismo id"];
             }
             await this.doctorRepository.create(doctorEntity);
+            const syncErrors = await this.doctorSpecialtyService.syncDoctorSpecialties(doctorEntity.id, doctor.doctorsSpecialties);
+            if (syncErrors.length > 0) {
+                return syncErrors;
+            }
             return [];
         } catch (error: any) {
             return [error.message || "Ocurrió un error al crear el doctor"];
@@ -54,6 +58,12 @@ export class DoctorServices {
                 return ["el doctor no existe"];
             }
             await this.doctorRepository.update(doctorEntity);
+            if (doctor.doctorsSpecialties !== undefined) {
+                const syncErrors = await this.doctorSpecialtyService.syncDoctorSpecialties(doctorEntity.id, doctor.doctorsSpecialties);
+                if (syncErrors.length > 0) {
+                    return syncErrors;
+                }
+            }
             return [];
         } catch (error: any) {
             return [error.message || "Ocurrió un error al actualizar el doctor"];
@@ -62,6 +72,10 @@ export class DoctorServices {
     async deleteDoctor(id: string): Promise<string[]> {
         if (!id) return ["el doctor no existe"];
         try {
+            const deleteErrors = await this.doctorSpecialtyService.deleteByDoctorId(id);
+            if (deleteErrors.length > 0) {
+                return deleteErrors;
+            }
             await this.doctorRepository.delete(id);
             return [];
         } catch (error: any) {
@@ -74,7 +88,7 @@ export class DoctorServices {
             if (!specialtyId) return [];
             const doctors = await this.doctorRepository.findAll();
             if (!doctors) return [];
-            const doctorsSpecialties = await this.doctorSpecialtyRepository.findBySpecialtyId(specialtyId);
+            const doctorsSpecialties = await this.doctorSpecialtyService.findBySpecialtyId(specialtyId);
             if (!doctorsSpecialties) return [];
             const filteredDoctors = doctors.filter(x => doctorsSpecialties.some(y => y.doctorId === x.id));
             return filteredDoctors.map(doctor => DoctorMapper.toDto(doctor));

@@ -1,4 +1,5 @@
 import { prisma } from "../lib/prisma";
+import { DoctorDto } from "../models/dtos/DoctorDto";
 import { Doctor } from "../models/entities/Doctor";
 
 //repositorio para doctors
@@ -7,6 +8,7 @@ export class DoctorRepository {
         try {
             const newDoctor = await prisma.doctor.create({
                 data: {
+                    id: doctor.id,
                     name: doctor.name,
                     email: doctor.email,
                     phone: doctor.phone,
@@ -15,9 +17,9 @@ export class DoctorRepository {
                     state: doctor.state,
                     country: doctor.country,
                 },
-                include: {
-                    doctorsSpecialties: true,
-                },
+        include: {
+            doctorsSpecialties: true,
+        },
             });
 
             return new Doctor(newDoctor);
@@ -26,10 +28,16 @@ export class DoctorRepository {
         }
     }
 
-    async findAll(): Promise<Doctor[]> {
+    async findAll(): Promise<DoctorDto[]> {
         const doctors = await prisma.doctor.findMany({
             include: {
-                doctorsSpecialties: true,
+                doctorsSpecialties: {
+                    include: {
+                        doctor: true,
+                        specialty: true,
+                    },
+                },
+           
             },
         });
 

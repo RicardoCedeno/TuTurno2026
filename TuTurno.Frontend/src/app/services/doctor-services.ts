@@ -20,7 +20,7 @@ export class DoctorServices {
     return this.apiServices.get<IResponse<IDoctor>>(`/doctors/getDoctorById/${id}`, { authenticated: false });
   }
   updateDoctor(doctor: IDoctor): Observable<IResponse<IDoctor>> {
-    return this.apiServices.put<IResponse<IDoctor>>('/doctors/updateDoctor', doctor, { authenticated: false });
+    return this.apiServices.put<IResponse<IDoctor>>(`/doctors/updateDoctor/${doctor.id}`, doctor, { authenticated: false });
   }
   deleteDoctor(id: string): Observable<IResponse<string[]>> {
     return this.apiServices.delete<IResponse<string[]>>(`/doctors/deleteDoctor/${id}`, { authenticated: false });

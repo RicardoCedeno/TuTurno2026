@@ -30,6 +30,7 @@ export class Doctors implements OnInit {
     this.loading.set(true);
     this.doctorServices.getDoctors().subscribe({
       next: (response) => {
+        console.log(response);
         if (response.success) {
           this.doctors.set(response.data);
         } else {
