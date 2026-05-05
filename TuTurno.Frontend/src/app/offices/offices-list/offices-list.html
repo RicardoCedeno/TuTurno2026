@@ -1,0 +1,79 @@
+@if (offices && offices.length > 0) {
+<div class="relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-sm">
+    <div class="overflow-x-auto">
+      <div class="max-h-[500px] overflow-y-auto scrollbar-thin">
+        <table class="min-w-full isolate">
+          <thead>
+            <tr class="bg-[var(--color-bg-main)]/50 backdrop-blur-md sticky top-0 z-10">
+              <th class="px-6 py-4 text-left text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-widest border-b border-[var(--color-border)]">
+                Oficina
+              </th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-widest border-b border-[var(--color-border)]">
+                Ubicación / Piso
+              </th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-widest border-b border-[var(--color-border)]">
+                Estado
+              </th>
+              <th class="px-6 py-4 border-b border-[var(--color-border)]"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[var(--color-border)]">
+            @for (office of offices; track office.id) {
+            <tr class="group hover:bg-sky-50/50 transition-all duration-200">
+              <td class="px-6 py-5">
+                <div class="flex items-center gap-3">
+                  <div class="hidden lg:block w-1 h-6 rounded-full bg-[var(--color-primary)] opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute"></div>
+                  <div class="flex flex-col">
+                    <span class="font-semibold text-[var(--color-text-main)] group-hover:text-[var(--color-primary-dark)]">
+                      {{ office.name ?? '-' }}
+                    </span>
+                    <span class="text-xs text-[var(--color-text-muted)]">
+                      {{ office.id }}
+                    </span>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-5">
+                <div class="flex flex-col text-sm">
+                  <span class="text-[var(--color-text-main)]">Sede: {{ office.locationId }}</span>
+                  <span class="text-[var(--color-text-muted)]">Piso: {{ office.floor ?? 'N/A' }}</span>
+                </div>
+              </td>
+              <td class="px-6 py-5">
+                <span [class]="office.active ? 'bg-green-100 text-green-700 border-green-200' : 'bg-red-100 text-red-700 border-red-200'" 
+                  class="px-3 py-1 text-xs font-medium rounded-full border">
+                  {{ office.active ? 'Activa' : 'Inactiva' }}
+                </span>
+              </td>
+              <td class="px-6 py-5 text-right">
+                <div class="flex justify-end gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-200">
+                  <button (click)="onUpdate(office)" class="p-2.5 rounded-xl bg-white border border-[var(--color-border)] text-[var(--color-primary-dark)] shadow-sm active:scale-95 lg:hover:shadow-md lg:hover:border-[var(--color-primary)] lg:hover:-translate-y-0.5 transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 13l6-6m2 2L7 17H5v-2l10-10z"/>
+                    </svg>
+                  </button>
+                  <button (click)="deleteOffice(office.id)" class="p-2.5 rounded-xl bg-white border border-[var(--color-border)] text-red-500 shadow-sm active:scale-95 lg:hover:shadow-md lg:hover:border-red-200 lg:hover:bg-red-50 lg:hover:-translate-y-0.5 transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="flex flex-col items-center justify-center py-16 bg-gray-50/50">
+    <div class="bg-white p-4 rounded-full shadow-inner mb-4">
+      <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+      </svg>
+    </div>
+    <h3 class="text-lg font-medium text-[var(--color-text-main)]">No hay registros</h3>
+    <p class="text-[var(--color-text-muted)] max-w-xs text-center">Aún no has agregado oficinas al sistema.</p>
+  </div>
+}

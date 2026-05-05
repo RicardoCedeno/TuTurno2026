@@ -44,6 +44,66 @@ export class LocationRepository {
         return location ? LocationMapper.toDto(new Location(location)) : null;
     }
 
+    async findByCity(city: string): Promise<LocationDto[]> {
+        const locations = await prisma.location.findMany({
+            where: {
+                city: {
+                    equals: city,
+                    mode: "insensitive",
+                },
+            },
+            include: {
+                offices: true,
+            },
+        });
+
+        return locations.map((location: any) => LocationMapper.toDto(new Location(location)));
+    }
+
+    async findByCountry(country: string): Promise<LocationDto[]> {
+        const locations = await prisma.location.findMany({
+            where: {
+                country: {
+                    equals: country,
+                    mode: "insensitive",
+                },
+            },
+            include: {
+                offices: true,
+            },
+        });
+
+        return locations.map((location: any) => LocationMapper.toDto(new Location(location)));
+    }
+
+    async findByPhone(phone: string): Promise<LocationDto[]> {
+        const locations = await prisma.location.findMany({
+            where: {
+                phone: {
+                    contains: phone,
+                },
+            },
+            include: {
+                offices: true,
+            },
+        });
+
+        return locations.map((location: any) => LocationMapper.toDto(new Location(location)));
+    }
+
+    async findByStatus(active: boolean): Promise<LocationDto[]> {
+        const locations = await prisma.location.findMany({
+            where: {
+                active: active,
+            },
+            include: {
+                offices: true,
+            },
+        });
+
+        return locations.map((location: any) => LocationMapper.toDto(new Location(location)));
+    }
+
     async create(location: LocationDto): Promise<LocationDto> {
         try {
             const newLocation = await prisma.location.create({

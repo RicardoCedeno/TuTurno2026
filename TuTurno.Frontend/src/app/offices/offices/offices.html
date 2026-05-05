@@ -1,0 +1,47 @@
+<div class="bg-white p-6 rounded-2xl shadow border border-[var(--color-border)]">
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
+    <h2 class="text-2xl font-semibold text-[var(--color-primary-dark)]">Oficinas</h2>
+    <div class="flex flex-col gap-2 sm:flex-row">
+      <button (click)="onAddOffice()" class="flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        Nueva
+      </button>
+      <button (click)="getOffices()" class="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5"/>
+        </svg>
+        Consultar
+      </button>
+    </div>
+  </div>
+  @switch (mode()) {
+    @case ('list') {
+      <app-offices-list
+        [offices]="offices()"
+        (delete)="deleteOffice($event)"
+        (updateOffice)="onEditOffice($event)"
+      ></app-offices-list>
+    }
+    @case ('create') {
+      <app-offices-form
+        [mode]="'create'"
+        [locations]="locations()"
+        (createOffice)="createOffice($event)"
+        (cancel)="onCancel('list')"
+      ></app-offices-form>
+    }
+    @case ('update') {
+      <app-offices-form
+        [mode]="'update'"
+        [locations]="locations()"
+        (cancel)="onCancel('list')"
+        (updateOffice)="updateOffice($event)"
+      ></app-offices-form>
+    }
+    @default {
+      <app-offices-list [offices]="offices()"></app-offices-list>
+    }
+  }
+</div>
