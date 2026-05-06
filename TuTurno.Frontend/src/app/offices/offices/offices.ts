@@ -1,6 +1,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { OfficesList } from '../offices-list/offices-list';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { OfficesForm } from '../offices-form/offices-form';
 import { AlertsService } from '../../services/alerts-service';
 import { DataServices } from '../../services/data-services';
@@ -12,7 +13,7 @@ import { ILocation } from '../../models/location';
 
 @Component({
   selector: 'app-offices',
-  imports: [OfficesList, CommonModule, OfficesForm],
+  imports: [OfficesList, CommonModule, OfficesForm, FormsModule],
   templateUrl: './offices.html',
   styleUrl: './offices.css',
   standalone: true,
@@ -22,6 +23,7 @@ export class Offices implements OnInit {
   private locationServices = inject(LocationServices);
   offices = signal<IOffice[]>([]);
   locations = signal<ILocation[]>([]);
+  selectedLocationId = signal<string>('');
   loading = signal<boolean>(false);
   mode = signal<'list' | 'create' | 'update' | null>('list');
   private alertsService = inject(AlertsService);
@@ -34,7 +36,13 @@ export class Offices implements OnInit {
 
   getOffices() {
     this.loading.set(true);
-    this.officeServices.getAllOffices().subscribe({
+    const locationId = this.selectedLocationId();
+    
+    const request = locationId 
+      ? this.officeServices.getOfficesByLocation(locationId)
+      : this.officeServices.getAllOffices();
+
+    request.subscribe({
       next: (response) => {
         if (response.success) {
           this.offices.set(response.data);
