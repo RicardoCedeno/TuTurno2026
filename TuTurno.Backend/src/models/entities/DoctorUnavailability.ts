@@ -5,22 +5,22 @@ export class DoctorUnavailability {
     doctorId: string;
     startDate: Date;
     endDate: Date;
-    reason?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
+    reason?: string | null;
+    createdAt?: Date | null;
+    updatedAt?: Date | null;
 
     // Relación de navegación
-    doctor?: Doctor;
+    doctor?: Doctor | null;
 
     constructor(data: {
         id: string;
         doctorId: string;
         startDate: Date;
         endDate: Date;
-        reason?: string;
-        createdAt?: Date;
-        updatedAt?: Date;
-        doctor?: Doctor;
+        reason?: string | null;
+        createdAt?: Date | null;
+        updatedAt?: Date | null;
+        doctor?: Doctor | null;
     }) {
         this.id = data.id;
         this.doctorId = data.doctorId;

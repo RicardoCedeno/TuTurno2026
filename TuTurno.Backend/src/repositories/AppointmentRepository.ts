@@ -131,6 +131,39 @@ export class AppointmentRepository {
         return appointments.map((appointment) => new Appointment(appointment as any));
     }
 
+    async findOverlapping(doctorId: string, start: Date, end: Date): Promise<Appointment[]> {
+        const appointments = await prisma.appointment.findMany({
+            where: {
+                doctorId,
+                status: { not: "cancelled" },
+                OR: [
+                    {
+                        // La cita nueva empieza durante una cita existente
+                        date: { lte: start },
+                        // Usamos una aproximación ya que Prisma no puede calcular 'date + duration' directamente en el where
+                        // Pero como las citas suelen ser cortas, podemos filtrar y luego refinar en el servicio
+                    },
+                    {
+                        // La cita nueva termina durante una cita existente
+                        date: { lte: end },
+                    }
+                ]
+            }
+        });
+
+        // Refinamos el solapamiento en memoria para mayor precisión
+        return appointments
+            .map((app) => new Appointment(app as any))
+            .filter(app => {
+                const appStart = app.date.getTime();
+                const appEnd = appStart + app.duration * 60000;
+                const searchStart = start.getTime();
+                const searchEnd = end.getTime();
+
+                return (searchStart < appEnd && searchEnd > appStart);
+            });
+    }
+
     async findByStatus(status: string): Promise<Appointment[]> {
         const appointments = await prisma.appointment.findMany({
             where: { status },

@@ -2,28 +2,23 @@ import { DoctorUnavailabilityDto } from "../dtos/DoctorUnavailabilityDto";
 import { DoctorUnavailability } from "../entities/DoctorUnavailability";
 
 export class DoctorUnavailabilityMapper {
-    static toDto(doctorUnavailability: DoctorUnavailability): DoctorUnavailabilityDto {
+    static toDto(entity: DoctorUnavailability): DoctorUnavailabilityDto {
         return {
-            id: doctorUnavailability.id,
-            doctorId: doctorUnavailability.doctorId,
-            startDate: doctorUnavailability.startDate,
-            endDate: doctorUnavailability.endDate,
-            reason: doctorUnavailability.reason,
-            createdAt: doctorUnavailability.createdAt,
-            updatedAt: doctorUnavailability.updatedAt,
+            id: entity.id,
+            doctorId: entity.doctorId,
+            startDate: entity.startDate,
+            endDate: entity.endDate,
+            reason: entity.reason
         };
     }
 
     static toEntity(dto: DoctorUnavailabilityDto): DoctorUnavailability {
-        return {
-            id: dto.id,
+        return new DoctorUnavailability({
+            id: dto.id || "",
             doctorId: dto.doctorId,
             startDate: dto.startDate,
             endDate: dto.endDate,
-            reason: dto.reason,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        };
+            reason: dto.reason
+        });
     }
 }
-

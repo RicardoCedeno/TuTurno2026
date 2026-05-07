@@ -3,14 +3,19 @@ import { AppointmentDto } from '../models/dtos/AppointmentDto';
 import { AppointmentMapper } from "../models/mappers/appointmentMapper";
 import { v4 as uuidv4 } from 'uuid';
 import { AppointmentCancellationServices } from "./AppointmentCancellationServices";
+import { DoctorAvailabilityServices } from "./DoctorAvailabilityServices";
+import { DoctorUnavailabilityServices } from "./DoctorUnavailabilityServices";
 
 export class AppointmentServices {
-    private appointmentRepository: AppointmentRepository;
     private cancellationServices: AppointmentCancellationServices;
-
+    private availabilityServices: DoctorAvailabilityServices;
+    private unavailabilityServices: DoctorUnavailabilityServices;
+    private appointmentRepository: AppointmentRepository;
     constructor() {
         this.appointmentRepository = new AppointmentRepository();
         this.cancellationServices = new AppointmentCancellationServices();
+        this.availabilityServices = new DoctorAvailabilityServices();
+        this.unavailabilityServices = new DoctorUnavailabilityServices();
     }
 
     async getAllAppointments(): Promise<AppointmentDto[]> {
@@ -77,6 +82,28 @@ export class AppointmentServices {
         }
 
         try {
+            const appointmentDate = new Date(dto.date);
+            const duration = dto.duration || 30;
+
+            // 1. Validar Disponibilidad Recurrente
+            const isWithinAvailability = await this.availabilityServices.isTimeWithinAvailability(dto.doctorId, appointmentDate, duration);
+            if (!isWithinAvailability) {
+                return ["El doctor no tiene disponibilidad configurada para este horario"];
+            }
+
+            // 2. Validar Bloqueos de Agenda
+            const isAvailable = await this.unavailabilityServices.isDoctorAvailable(dto.doctorId, appointmentDate, duration);
+            if (!isAvailable) {
+                return ["El horario se encuentra bloqueado por el doctor"];
+            }
+
+            // 3. Validar Solapamiento con otras citas
+            const appointmentEnd = new Date(appointmentDate.getTime() + duration * 60000);
+            const overlaps = await this.appointmentRepository.findOverlapping(dto.doctorId, appointmentDate, appointmentEnd);
+            if (overlaps.length > 0) {
+                return ["Ya existe otra cita agendada en este horario"];
+            }
+
             const appointmentEntity = AppointmentMapper.toEntity(dto);
             await this.appointmentRepository.create(appointmentEntity);
             return [];

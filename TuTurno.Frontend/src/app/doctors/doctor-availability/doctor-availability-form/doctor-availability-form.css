@@ -1,0 +1,145 @@
+.form-container {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.day-card {
+    background: var(--color-bg-secondary);
+    border: 2px solid var(--color-border);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.day-card:hover {
+    border-color: var(--color-text-muted);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.day-card.active {
+    background: var(--color-bg-main);
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 30px var(--color-primary-light);
+}
+
+.day-card.weekend:not(.active) {
+    background: var(--color-bg-tertiary);
+    opacity: 0.8;
+}
+
+.time-inputs {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.time-inputs.visible {
+    max-height: 200px;
+    opacity: 1;
+    margin-top: 1rem;
+}
+
+.time-field {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    background: var(--color-bg-secondary);
+    border: 1.5px solid var(--color-border);
+    border-radius: 0.5rem;
+    color: var(--color-text-main);
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.time-field:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background: var(--color-bg-main);
+}
+
+/* Toggle Switch Styling */
+.toggle-switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--color-border);
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--color-primary);
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+/* Botones */
+.btn-save {
+    padding: 0.625rem 1.25rem;
+    background: var(--color-primary);
+    color: white;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-save:hover {
+    background: var(--color-primary-dark);
+    box-shadow: 0 4px 12px var(--color-primary-light);
+}
+
+.btn-cancel {
+    padding: 0.625rem 1.25rem;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+    border: 1.5px solid var(--color-border);
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-main);
+}
+
+/* Soporte para modo oscuro */
+:host-context(.dark) .day-card:not(.active) {
+    background: var(--color-bg-tertiary);
+}
+
+:host-context(.dark) .time-field {
+    background: var(--color-bg-main);
+}

@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "name": "Lunes",
+        "type": "weekday"
+    },
+    {
+        "id": 2,
+        "name": "Martes",
+        "type": "weekday"
+    },
+    {
+        "id": 3,
+        "name": "Miercoles",
+        "type": "weekday"
+    },
+    {
+        "id": 4,
+        "name": "Jueves",
+        "type": "weekday"
+    },
+    {
+        "id": 5,
+        "name": "Viernes",
+        "type": "weekday"
+    },
+    {
+        "id": 6,
+        "name": "Sabado",
+        "type": "weekend"
+    },
+    {
+        "id": 7,
+        "name": "Domingo",
+        "type": "weekend"
+    }
+]
