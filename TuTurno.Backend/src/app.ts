@@ -7,6 +7,7 @@ import patientRoutes from './routes/PatientRoutes';
 import officeRoutes from './routes/OfficeRoutes';
 import locationRoutes from './routes/LocationRoutes';
 import appointmentRoutes from './routes/AppointmentRoutes';
+import appointmentCancellationRoutes from './routes/AppointmentCancellationRoutes';
 
 const app: Application = express();
 
@@ -37,6 +38,7 @@ app.use('/api/patients', patientRoutes);
 app.use('/api/offices', officeRoutes);
 app.use('/api/locations', locationRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/appointment-cancellations', appointmentCancellationRoutes);
 
 // ─── 404 Handler ────────────────────────────────────────────────────────────
 app.use((_req: Request, res: Response) => {

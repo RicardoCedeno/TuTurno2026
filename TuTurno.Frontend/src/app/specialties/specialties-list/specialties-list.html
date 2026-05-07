@@ -1,64 +1,58 @@
 @if (specialties && specialties.length > 0) {
-<div class="relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-sm">
-    <div class="overflow-x-auto">
-      <div class="max-h-[500px] overflow-y-auto scrollbar-thin">
-        <table class="min-w-full isolate">
-          <thead>
-            <tr class="bg-[var(--color-bg-main)]/50 backdrop-blur-md sticky top-0 z-10">
-              <th class="px-6 py-4 text-left text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-widest border-b border-[var(--color-border)]">
-                Nombre de Especialidad
-              </th>
-              <th class="px-6 py-4 text-left text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-widest border-b border-[var(--color-border)]">
-                Descripción
-              </th>
-              <th class="px-6 py-4 border-b border-[var(--color-border)]"></th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-[var(--color-border)]">
-            @for (specialty of specialties; track specialty.id) {
-            <tr class="group hover:bg-sky-50/50 transition-all duration-200">
-              <td class="px-6 py-5">
-                <div class="flex items-center gap-3">
-                  <div class="hidden lg:block w-1 h-6 rounded-full bg-[var(--color-primary)] opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute"></div>
-                  <span class="font-semibold text-[var(--color-text-main)] group-hover:text-[var(--color-primary-dark)]">
-                    {{ specialty.name ?? '-' }}
-                  </span>
-                </div>
-              </td>
-              <td class="px-6 py-5">
-                <p class="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-xs md:max-w-md truncate md:whitespace-normal">
-                  {{ specialty.description ?? '-' }}
-                </p>
-              </td>
-              <td class="px-6 py-5 text-right">
-                <div class="flex justify-end gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-200">
-                  <button (click)="onUpdate(specialty)" class="p-2.5 rounded-xl bg-white border border-[var(--color-border)] text-[var(--color-primary-dark)] shadow-sm active:scale-95 lg:hover:shadow-md lg:hover:border-[var(--color-primary)] lg:hover:-translate-y-0.5 transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 13l6-6m2 2L7 17H5v-2l10-10z"/>
-                    </svg>
-                  </button>
-                  <button (click)="deleteSpecialty(specialty.id)" class="p-2.5 rounded-xl bg-white border border-[var(--color-border)] text-red-500 shadow-sm active:scale-95 lg:hover:shadow-md lg:hover:border-red-200 lg:hover:bg-red-50 lg:hover:-translate-y-0.5 transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                    </svg>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    </div>
+<div class="table-container">
+  <div class="max-h-[500px] overflow-y-auto scrollbar-thin">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="table-th">Nombre de Especialidad</th>
+          <th class="table-th">Descripción</th>
+          <th class="table-th"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-[var(--color-border)]">
+        @for (specialty of specialties; track specialty.id) {
+        <tr class="table-row group">
+          <td class="table-td">
+            <div class="flex items-center gap-3">
+              <div class="hidden lg:block w-1 h-6 rounded-full bg-[var(--color-primary)] opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute"></div>
+              <span class="font-semibold text-[var(--color-text-main)] group-hover:text-[var(--color-primary-dark)]">
+                {{ specialty.name || '-' }}
+              </span>
+            </div>
+          </td>
+          <td class="table-td">
+            <p class="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-xs md:max-w-md truncate md:whitespace-normal">
+              {{ specialty.description || '-' }}
+            </p>
+          </td>
+          <td class="table-td text-right">
+            <div class="flex justify-end gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-200">
+              <button (click)="onUpdate(specialty)" class="btn-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 13l6-6m2 2L7 17H5v-2l10-10z"/>
+                </svg>
+              </button>
+              <button (click)="deleteSpecialty(specialty.id)" class="btn-icon-danger">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
   </div>
+</div>
 } @else {
-  <div class="flex flex-col items-center justify-center py-16 bg-gray-50/50">
-    <div class="bg-white p-4 rounded-full shadow-inner mb-4">
-      <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <div class="empty-state">
+    <div class="empty-state-icon">
+      <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
       </svg>
     </div>
-    <h3 class="text-lg font-medium text-[var(--color-text-main)]">No hay registros</h3>
-    <p class="text-[var(--color-text-muted)] max-w-xs text-center">Aún no has agregado especialidades médicas al sistema.</p>
+    <h3 class="text-subtitle font-medium">No hay registros</h3>
+    <p class="text-muted max-w-xs mt-2">Aún no has agregado especialidades médicas al sistema.</p>
   </div>
 }

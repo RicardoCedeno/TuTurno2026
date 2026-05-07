@@ -1,0 +1,146 @@
+<div class="tabs-container">
+  <!-- Navigation Tabs -->
+  <div class="flex border-b border-[var(--color-border)] mb-6">
+    <button 
+      (click)="activeTab.set('scheduled')"
+      class="tab-btn py-3 px-6 font-medium transition-all relative cursor-pointer"
+      [class.text-[var(--color-primary)]]="activeTab() === 'scheduled'"
+      [class.text-[var(--color-text-muted)]]="activeTab() === 'scheduled' === false">
+      Citas Programadas
+      @if (activeTab() === 'scheduled') {
+        <div class="absolute bottom-0 left-0 w-full h-[3px] bg-[var(--color-primary)] rounded-t-full"></div>
+      }
+    </button>
+    <button 
+      (click)="activeTab.set('cancelled')"
+      class="tab-btn py-3 px-6 font-medium transition-all relative cursor-pointer"
+      [class.text-[var(--color-primary)]]="activeTab() === 'cancelled'"
+      [class.text-[var(--color-text-muted)]]="activeTab() === 'cancelled' === false">
+      Historial de Cancelaciones
+      @if (activeTab() === 'cancelled') {
+        <div class="absolute bottom-0 left-0 w-full h-[3px] bg-[var(--color-primary)] rounded-t-full"></div>
+      }
+    </button>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content animate-slide-up">
+    @if (activeTab() === 'scheduled') {
+      <div class="card overflow-hidden bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl shadow-sm">
+        <table class="w-full text-left border-collapse">
+          <thead class="bg-[var(--color-bg-main)] text-[var(--color-text-muted)] text-xs uppercase">
+            <tr>
+              <th class="p-4 border-b border-[var(--color-border)]">Fecha</th>
+              <th class="p-4 border-b border-[var(--color-border)]">Paciente</th>
+              <th class="p-4 border-b border-[var(--color-border)]">Doctor</th>
+              <th class="p-4 border-b border-[var(--color-border)]">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[var(--color-border)]">
+            @for (app of scheduledAppointments(); track app.id) {
+              <tr class="hover:bg-[var(--color-bg-hover)] transition-colors">
+                <td class="p-4">{{ app.date | date:'short' }}</td>
+                <td class="p-4 font-medium text-[var(--color-text-main)]">{{ getPatientName(app.patientId) }}</td>
+                <td class="p-4 text-[var(--color-text-main)]">{{ getDoctorName(app.doctorId) }}</td>
+                <td class="p-4">
+                  <button (click)="openCancelModal(app)" 
+                    class="btn-icon text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 p-2 rounded-lg transition-all cursor-pointer"
+                    title="cancelar">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4" class="p-8 text-center text-[var(--color-text-muted)]">No hay citas programadas para este criterio.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div class="card overflow-hidden bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl shadow-sm">
+        <table class="w-full text-left border-collapse">
+          <thead class="bg-[var(--color-bg-main)] text-[var(--color-text-muted)] text-xs uppercase">
+            <tr>
+              <th class="p-4 border-b border-[var(--color-border)]">Fecha Cancelación</th>
+              <th class="p-4 border-b border-[var(--color-border)]">Paciente</th>
+              <th class="p-4 border-b border-[var(--color-border)]">Motivo</th>
+              <th class="p-4 border-b border-[var(--color-border)]">Cancelado por</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[var(--color-border)]">
+            @for (can of cancellations(); track can.id) {
+              <tr class="hover:bg-[var(--color-bg-hover)] transition-colors">
+                <td class="p-4 text-[var(--color-text-main)]">{{ can.cancelledAt | date:'short' }}</td>
+                <td class="p-4 font-medium text-[var(--color-text-main)]">{{ getPatientName(can.appointment?.patientId || '') }}</td>
+                <td class="p-4 text-[var(--color-text-main)]">{{ can.reason }}</td>
+                <td class="p-4">
+                  <span class="px-3 py-1 rounded-full text-xs font-medium" 
+                    [ngClass]="{
+                      'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300': can.cancelledBy === 'patient',
+                      'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300': can.cancelledBy === 'doctor',
+                      'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300': can.cancelledBy === 'admin'
+                    }">
+                    {{ can.cancelledBy | uppercase }}
+                  </span>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4" class="p-8 text-center text-[var(--color-text-muted)]">No hay historial de cancelaciones.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Modal de Cancelación -->
+@if (showModal()) {
+  <div class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+    <div class="modal-content bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl w-full max-w-md shadow-2xl animate-scale-up overflow-hidden">
+      <div class="p-6 border-b border-[var(--color-border)] flex justify-between items-center">
+        <h3 class="text-xl font-bold text-red-600">Cancelar Cita</h3>
+        <button (click)="closeModal()" class="text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] cursor-pointer">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      
+      <div class="p-6">
+        <div class="mb-6 p-4 bg-red-50 dark:bg-red-950/20 rounded-xl border border-red-100 dark:border-red-900/30">
+          <p class="text-sm text-red-800 dark:text-red-200">
+            ¿Está seguro que desea cancelar la cita del <strong>{{ selectedAppointment()?.date | date:'short' }}</strong> para <strong>{{ selectedAppointment()?.patient?.name }}</strong>?
+          </p>
+        </div>
+
+        <div class="form-group mb-4">
+          <label class="form-label block mb-2 font-medium text-[var(--color-text-main)]">Motivo de cancelación <span class="text-red-500">*</span></label>
+          <textarea [(ngModel)]="cancellationReason" rows="3" 
+            class="form-control w-full resize-none p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-main)] text-[var(--color-text-main)] focus:ring-2 focus:ring-red-500/20 focus:border-red-500 outline-none transition-all"
+            placeholder="Escriba el motivo aquí..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label block mb-2 font-medium text-[var(--color-text-main)]">Cancelado por</label>
+          <select [(ngModel)]="cancelledBy" class="form-control w-full p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-main)] text-[var(--color-text-main)] outline-none">
+            <option value="admin">Administrador</option>
+            <option value="doctor">Doctor</option>
+            <option value="patient">Paciente</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="p-6 bg-[var(--color-bg-main)]/50 border-t border-[var(--color-border)] flex gap-3">
+        <button (click)="closeModal()" class="btn-secondary flex-1 py-3 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-bg-hover)] transition-all cursor-pointer">Cerrar</button>
+        <button (click)="confirmCancellation()" class="btn-danger flex-1 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-medium transition-all shadow-lg shadow-red-500/20 cursor-pointer">
+          Confirmar Cancelación
+        </button>
+      </div>
+    </div>
+  </div>
+}

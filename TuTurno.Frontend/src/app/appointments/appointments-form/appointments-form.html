@@ -1,4 +1,4 @@
-<div class="calendar-container h-[600px] border rounded-xl overflow-hidden shadow-inner bg-gray-50/30">
+<div class="calendar-container h-[600px] border border-[var(--color-border)] rounded-xl overflow-hidden shadow-inner bg-[var(--color-bg-main)]">
   <tutu-calendar
     [events]="events()"
     [view]="'week'"
@@ -9,25 +9,25 @@
 </div>
 
 @if (showModal()) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
-    <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-gray-100">
+  <div class="modal-overlay">
+    <div class="modal-content">
       <!-- Modal Header -->
-      <div class="px-6 py-4 bg-gray-50 border-b flex items-center justify-between">
-        <h3 class="text-xl font-bold text-[var(--color-primary-dark)]">
+      <div class="modal-header">
+        <h3 class="text-subtitle font-bold text-[var(--color-primary-dark)]">
           {{ isEditMode() ? 'Editar Cita' : 'Nueva Cita' }}
         </h3>
-        <button (click)="closeModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+        <button (click)="closeModal()" class="text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] transition-colors">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
       </div>
 
       <!-- Modal Body -->
-      <div class="p-6 space-y-4">
+      <div class="modal-body">
         <div class="grid grid-cols-1 gap-4">
           <!-- Paciente -->
-          <div class="space-y-1">
-            <label class="text-xs font-bold uppercase tracking-wider text-gray-500 ml-1">Paciente</label>
-            <select [(ngModel)]="formModel.patientId" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[var(--color-primary)] outline-none bg-white transition-all">
+          <div class="form-group">
+            <label class="form-label">Paciente</label>
+            <select [(ngModel)]="formModel.patientId" class="form-control">
               <option value="" disabled>Seleccione un paciente</option>
               @for (p of patients(); track p.id) {
                 <option [value]="p.id">{{ p.name }}</option>
@@ -36,9 +36,9 @@
           </div>
 
           <!-- Doctor -->
-          <div class="space-y-1">
-            <label class="text-xs font-bold uppercase tracking-wider text-gray-500 ml-1">Doctor</label>
-            <select [(ngModel)]="formModel.doctorId" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[var(--color-primary)] outline-none bg-white transition-all">
+          <div class="form-group">
+            <label class="form-label">Doctor</label>
+            <select [(ngModel)]="formModel.doctorId" class="form-control">
               <option value="" disabled>Seleccione un doctor</option>
               @for (d of doctors(); track d.id) {
                 <option [value]="d.id">{{ d.name }}</option>
@@ -47,9 +47,9 @@
           </div>
 
           <!-- Oficina -->
-          <div class="space-y-1">
-            <label class="text-xs font-bold uppercase tracking-wider text-gray-500 ml-1">Oficina</label>
-            <select [(ngModel)]="formModel.officeId" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[var(--color-primary)] outline-none bg-white transition-all">
+          <div class="form-group">
+            <label class="form-label">Oficina</label>
+            <select [(ngModel)]="formModel.officeId" class="form-control">
               <option value="" disabled>Seleccione una oficina</option>
               @for (o of offices(); track o.id) {
                 <option [value]="o.id">{{ o.name }} (Piso {{ o.floor }})</option>
@@ -58,22 +58,22 @@
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <div class="space-y-1">
-                <label class="text-xs font-bold uppercase tracking-wider text-gray-500 ml-1">Fecha y Hora</label>
+            <div class="form-group">
+                <label class="form-label">Fecha y Hora</label>
                 <input type="datetime-local" [ngModel]="dateString()" (ngModelChange)="dateString.set($event)" 
-                  class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[var(--color-primary)] outline-none bg-white transition-all">
+                  class="form-control">
             </div>
             <!-- Duración -->
-            <div class="space-y-1">
-                <label class="text-xs font-bold uppercase tracking-wider text-gray-500 ml-1">Duración (min)</label>
-                <input type="number" [(ngModel)]="formModel.duration" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[var(--color-primary)] outline-none bg-white transition-all">
+            <div class="form-group">
+                <label class="form-label">Duración (min)</label>
+                <input type="number" [(ngModel)]="formModel.duration" class="form-control">
             </div>
           </div>
 
           <!-- Estado -->
-          <div class="space-y-1">
-            <label class="text-xs font-bold uppercase tracking-wider text-gray-500 ml-1">Estado</label>
-            <select [(ngModel)]="formModel.status" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[var(--color-primary)] outline-none bg-white transition-all">
+          <div class="form-group">
+            <label class="form-label">Estado</label>
+            <select [(ngModel)]="formModel.status" class="form-control">
               <option value="scheduled">Agendada</option>
               <option value="completed">Completada</option>
               <option value="cancelled">Cancelada</option>
@@ -81,19 +81,19 @@
           </div>
 
           <!-- Notas -->
-          <div class="space-y-1">
-            <label class="text-xs font-bold uppercase tracking-wider text-gray-500 ml-1">Notas</label>
-            <textarea [(ngModel)]="formModel.notes" rows="2" placeholder="Opcional..." class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[var(--color-primary)] outline-none bg-white transition-all resize-none"></textarea>
+          <div class="form-group">
+            <label class="form-label">Notas</label>
+            <textarea [(ngModel)]="formModel.notes" rows="2" placeholder="Opcional..." class="form-control resize-none"></textarea>
           </div>
         </div>
       </div>
 
       <!-- Modal Footer -->
-      <div class="px-6 py-4 bg-gray-50 border-t flex gap-3 justify-end">
-        <button (click)="closeModal()" class="px-6 py-2.5 rounded-xl font-bold text-gray-500 hover:bg-gray-200 transition-colors">
+      <div class="modal-footer">
+        <button (click)="closeModal()" class="btn btn-secondary">
           Cancelar
         </button>
-        <button (click)="confirm()" class="px-8 py-2.5 rounded-xl font-bold bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)] transition-colors shadow-lg shadow-sky-200 active:scale-95">
+        <button (click)="confirm()" class="btn btn-primary">
           {{ isEditMode() ? 'Guardar Cambios' : 'Confirmar Cita' }}
         </button>
       </div>

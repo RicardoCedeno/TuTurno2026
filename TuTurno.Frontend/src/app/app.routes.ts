@@ -6,6 +6,7 @@ import { Patients } from './patients/patients/patients';
 import { Offices } from './offices/offices/offices';
 import { Locations } from './locations/locations/locations';
 import { Appointments } from './appointments/appointments/appointments';
+import { AppointmentsCancellation } from './appointments-cancellation/appointments-cancellation/appointments-cancellation';
 
 
 
@@ -17,4 +18,5 @@ export const routes: Routes = [
   { path: 'offices', component: Offices },
   { path: 'locations', component: Locations },
   { path: 'appointments', component: Appointments },
+  { path: 'cancellations', component: AppointmentsCancellation },
 ];

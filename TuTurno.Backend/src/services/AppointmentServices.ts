@@ -2,12 +2,15 @@ import { AppointmentRepository } from "../repositories/AppointmentRepository";
 import { AppointmentDto } from '../models/dtos/AppointmentDto';
 import { AppointmentMapper } from "../models/mappers/appointmentMapper";
 import { v4 as uuidv4 } from 'uuid';
+import { AppointmentCancellationServices } from "./AppointmentCancellationServices";
 
 export class AppointmentServices {
     private appointmentRepository: AppointmentRepository;
+    private cancellationServices: AppointmentCancellationServices;
 
     constructor() {
         this.appointmentRepository = new AppointmentRepository();
+        this.cancellationServices = new AppointmentCancellationServices();
     }
 
     async getAllAppointments(): Promise<AppointmentDto[]> {
@@ -95,6 +98,11 @@ export class AppointmentServices {
             }
             const appointmentEntity = AppointmentMapper.toEntity(dto);
             await this.appointmentRepository.update(appointmentEntity);
+
+            if (dto.status !== "cancelled") {
+                await this.cancellationServices.deleteCancellationByAppointment(dto.id);
+            }
+
             return [];
         } catch (error: any) {
             return [error.message || "Ocurrió un error al actualizar la cita"];

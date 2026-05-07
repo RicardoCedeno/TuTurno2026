@@ -1,42 +1,32 @@
-<form class="space-y-6" #form="ngForm" (ngSubmit)="onSubmit(form)">
+<form class="space-y-6 animate-fade-in" #form="ngForm" (ngSubmit)="onSubmit(form)">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Información de la Oficina -->
     <div class="space-y-4">
-      <h3 class="text-lg font-medium text-[var(--color-primary-dark)] border-b pb-2">Detalles de la Oficina</h3>
+      <h3 class="text-subtitle font-medium text-[var(--color-primary-dark)] border-b border-[var(--color-border)] pb-2">Detalles de la Oficina</h3>
 
-      <!-- <div>
-        <label for="id" class="block text-sm font-medium text-[var(--color-text-main)] mb-1">ID de Oficina</label>
-        <input type="text" id="id" name="id" [(ngModel)]="formValues.id" required
-          [disabled]="mode() === 'update'"
-          class="block w-full px-4 py-2 rounded-lg border border-[var(--color-border)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none disabled:bg-gray-100"
-          placeholder="Ej: OFF-001">
-      </div> -->
-
-      <div>
-        <label for="name" class="block text-sm font-medium text-[var(--color-text-main)] mb-1">Nombre de la
-          Oficina</label>
+      <div class="form-group">
+        <label for="name" class="form-label">Nombre de la Oficina</label>
         <input type="text" id="name" name="name" [(ngModel)]="formValues.name" required
-          class="block w-full px-4 py-2 rounded-lg border border-[var(--color-border)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none"
+          class="form-control"
           placeholder="Ej: Consultorio 101">
       </div>
 
-      <div>
-        <label for="floor" class="block text-sm font-medium text-[var(--color-text-main)] mb-1">Piso</label>
+      <div class="form-group">
+        <label for="floor" class="form-label">Piso</label>
         <input type="text" id="floor" name="floor" [(ngModel)]="formValues.floor"
-          class="block w-full px-4 py-2 rounded-lg border border-[var(--color-border)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none"
+          class="form-control"
           placeholder="Ej: 1er Piso">
       </div>
     </div>
 
     <!-- Ubicación y Estado -->
     <div class="space-y-4">
-      <h3 class="text-lg font-medium text-[var(--color-primary-dark)] border-b pb-2">Ubicación y Estado</h3>
+      <h3 class="text-subtitle font-medium text-[var(--color-primary-dark)] border-b border-[var(--color-border)] pb-2">Ubicación y Estado</h3>
 
-      <div>
-        <label for="locationId" class="block text-sm font-medium text-[var(--color-text-main)] mb-1">Ubicación
-          (Sede)</label>
+      <div class="form-group">
+        <label for="locationId" class="form-label">Ubicación (Sede)</label>
         <select id="locationId" name="locationId" [(ngModel)]="formValues.locationId" required
-          class="block w-full px-4 py-2 rounded-lg border border-[var(--color-border)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none bg-white">
+          class="form-control">
           <option value="" disabled selected>Seleccione una sede</option>
           @for (location of locations(); track location.id) {
           <option [value]="location.id">{{ location.name }}</option>
@@ -44,11 +34,10 @@
         </select>
       </div>
 
-      <div>
-        <label for="description"
-          class="block text-sm font-medium text-[var(--color-text-main)] mb-1">Descripción</label>
+      <div class="form-group">
+        <label for="description" class="form-label">Descripción</label>
         <textarea id="description" name="description" [(ngModel)]="formValues.description" rows="3"
-          class="block w-full px-4 py-2 rounded-lg border border-[var(--color-border)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none"
+          class="form-control resize-none"
           placeholder="Opcional: Detalles adicionales de la oficina..."></textarea>
       </div>
 
@@ -61,13 +50,11 @@
   </div>
 
   <!-- Botones -->
-  <div class="flex gap-3 justify-end pt-4 border-t">
-    <button type="button" (click)="onCancel()"
-      class="px-6 py-2 rounded-lg font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+  <div class="flex gap-3 justify-end pt-4 border-t border-[var(--color-border)]">
+    <button type="button" (click)="onCancel()" class="btn btn-secondary">
       Cancelar
     </button>
-    <button type="submit" [disabled]="!form.valid"
-      class="px-6 py-2 rounded-lg font-medium bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm">
+    <button type="submit" [disabled]="!form.valid" class="btn btn-primary">
       {{ buttonLabel }}
     </button>
   </div>
