@@ -6,12 +6,15 @@ export class SpecialtyRepository {
     private specialties: Specialty[] = [];
 
     async create(specialty: Specialty): Promise<Specialty> {
-        try{
+        try {
             const newSpecialty = await prisma.specialty.create({
-                data: specialty
+                data: {
+                    name: specialty.name,
+                    description: specialty.description
+                }
             });
             return new Specialty(newSpecialty);
-        }catch(error){
+        } catch (error) {
             throw new Error("Error al crear la especialización");
         }
     }
@@ -32,7 +35,7 @@ export class SpecialtyRepository {
                 id: id
             }
         });
-        return specialty ? new Specialty(specialty) : null; 
+        return specialty ? new Specialty(specialty) : null;
     }
     async findByName(name: string): Promise<Specialty | null> {
         const specialty = await prisma.specialty.findFirst({
@@ -46,7 +49,7 @@ export class SpecialtyRepository {
         return specialty ? new Specialty(specialty) : null;
     }
     async update(specialty: Specialty): Promise<Specialty> {
-        
+
         const updatedSpecialty = await prisma.specialty.update({
             where: { id: specialty.id },
             data: {

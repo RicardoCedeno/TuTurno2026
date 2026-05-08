@@ -71,19 +71,84 @@
 
   <!-- Especialidades -->
   <div class="space-y-4">
-    <h3 class="text-subtitle font-medium text-[var(--color-primary-dark)] border-b border-[var(--color-border)] pb-2">Especialidades</h3>
-    <div class="flex flex-wrap gap-2">
-      @for (specialty of specialties(); track specialty.id) {
-        <button type="button" (click)="toggleSpecialty(specialty)"
-          [class]="isSpecialtySelected(specialty.id) 
-            ? 'px-4 py-2 rounded-full bg-[var(--color-primary)] text-[var(--color-text-inverse)] border border-[var(--color-primary)]' 
-            : 'px-4 py-2 rounded-full bg-[var(--color-bg-card)] text-[var(--color-text-main)] border border-[var(--color-border)] hover:border-[var(--color-primary)]'"
-          class="transition-all text-sm font-medium">
-          {{ specialty.name }}
-        </button>
-      } @empty {
-        <p class="text-muted italic">No hay especialidades disponibles.</p>
+    <div class="flex items-center justify-between border-b border-[var(--color-border)] pb-2">
+      <h3 class="text-subtitle font-medium text-[var(--color-primary-dark)]">Especialidades</h3>
+      @if (formValues.doctorsSpecialties?.length) {
+        <span class="text-xs font-bold text-[var(--color-primary)] bg-[var(--color-primary-light)] px-3 py-1 rounded-full animate-fade-in">
+          {{ formValues.doctorsSpecialties?.length }} Seleccionadas
+        </span>
       }
+    </div>
+    
+    <!-- Area de Seleccionadas (Badge list) -->
+    @if (formValues.doctorsSpecialties?.length) {
+      <div class="flex flex-wrap gap-2 p-3 bg-[var(--color-primary-light)]/10 rounded-2xl border border-[var(--color-primary-light)]/30 animate-slide-up">
+        @for (ds of formValues.doctorsSpecialties; track ds.specialtyId) {
+          @let s = getSpecialtyById(ds.specialtyId);
+          @if (s) {
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-[var(--color-bg-card)] text-[var(--color-primary-dark)] rounded-xl border border-[var(--color-primary-light)] shadow-sm text-sm font-medium group transition-all hover:shadow-md">
+              <span>{{ s.name }}</span>
+              <button type="button" (click)="toggleSpecialty(s)" 
+                class="p-0.5 rounded-lg hover:bg-[var(--color-danger-bg)] hover:text-[var(--color-danger)] transition-colors"
+                title="Eliminar">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </div>
+          }
+        }
+      </div>
+    }
+
+    <!-- Buscador y Lista Completa -->
+    <div class="space-y-4">
+      <div class="relative group">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <input type="text" 
+          (input)="searchTerm.set($any($event.target).value)"
+          placeholder="Buscar y seleccionar especialidades..." 
+          class="form-control pl-10 text-sm focus:ring-[var(--color-primary)]/20">
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-64 overflow-y-auto scrollbar-thin pr-2 p-1">
+        @for (specialty of filteredSpecialties(); track specialty.id) {
+          @let selected = isSpecialtySelected(specialty.id);
+          <button type="button" 
+            (click)="toggleSpecialty(specialty)"
+            [class]="selected 
+              ? 'border-[var(--color-primary)] bg-[var(--color-primary-light)] text-[var(--color-primary-dark)] shadow-sm' 
+              : 'border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text-main)] hover:border-[var(--color-primary)] hover:bg-[var(--color-bg-hover)] hover:-translate-y-0.5 hover:shadow-sm'"
+            class="group flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-medium transition-all duration-200">
+            
+            <div [class]="selected ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-bg-main)] text-[var(--color-text-muted)] group-hover:bg-[var(--color-primary-light)] group-hover:text-[var(--color-primary)]'" 
+                 class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0 transition-all group-active:scale-90">
+              @if (selected) {
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+              }
+            </div>
+            
+            <span class="truncate">{{ specialty.name }}</span>
+          </button>
+        } @empty {
+          <div class="col-span-full flex flex-col items-center justify-center py-10 text-[var(--color-text-muted)] bg-[var(--color-bg-main)]/50 rounded-2xl border-2 border-dashed border-[var(--color-border)] animate-fade-in">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mb-2 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p class="text-sm">No se encontraron especialidades</p>
+          </div>
+        }
+      </div>
     </div>
   </div>
 

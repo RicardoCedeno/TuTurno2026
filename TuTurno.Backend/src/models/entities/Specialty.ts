@@ -1,6 +1,6 @@
 import { DoctorSpecialty } from "./DoctorSpecialty";
 
-export class Specialty{
+export class Specialty {
     id: string;
     name: string;
     description: string;
@@ -8,7 +8,7 @@ export class Specialty{
     updatedAt?: Date;
 
     // ---------------------- Navegación ----------------------
-    DoctorsSpecialties?: DoctorSpecialty[] = [];
+    doctorsSpecialties?: DoctorSpecialty[] = [];
 
     constructor(data: Specialty) {
         this.id = data.id;
@@ -16,6 +16,6 @@ export class Specialty{
         this.description = data.description;
         this.createdAt = data.createdAt;
         this.updatedAt = data.updatedAt;
-        this.DoctorsSpecialties = data.DoctorsSpecialties;
+        this.doctorsSpecialties = data.doctorsSpecialties;
     }
 }

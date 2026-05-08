@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, input, Output, output } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, input, Output, output } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ISpecialty } from '../../models/specialty';
 import { DataServices } from '../../services/data-services';
 import { AlertsService } from '../../services/alerts-service';
+import { SpecialtiesAiServices } from '../../services/ai-services/specialties-ai-services';
 
 @Component({
   selector: 'app-specialties-form',
@@ -18,6 +19,8 @@ export class SpecialtiesForm {
   cancel = output<string>();
   mode = input<'create' | 'update' | null>(null);
   private dataServices = inject(DataServices<ISpecialty>);
+  private specialtiesAiServices = inject(SpecialtiesAiServices);
+  private cdr = inject(ChangeDetectorRef);
   formValues: Partial<ISpecialty> = { name: '', description: '' };
   buttonLabel: string = ''
 
@@ -39,15 +42,15 @@ export class SpecialtiesForm {
   }
   private alertsService = inject(AlertsService);
 
-  onSubmit(form: NgForm){
-    if(form.valid){
-      if(this.mode() === 'create'){
+  onSubmit(form: NgForm) {
+    if (form.valid) {
+      if (this.mode() === 'create') {
         this.createSpecialty.emit(form.value);
-      } else if(this.mode() === 'update'){
+      } else if (this.mode() === 'update') {
         console.log("update")
         const specialty = this.dataServices.getSelectedItem();
         console.log("specialty", specialty);
-        if(specialty){
+        if (specialty) {
           console.log("specialty if", specialty);
           specialty.name = form.value.name;
           specialty.description = form.value.description;
@@ -61,7 +64,30 @@ export class SpecialtiesForm {
     }
   }
 
-  onCancel(){
+  onCancel() {
     this.cancel.emit('list');
+  }
+
+  generateDescription() {
+    if (this.formValues.name) {
+      this.specialtiesAiServices.generateSpecialtyDescription(this.formValues.name).subscribe({
+        next: (res) => {
+          console.log("res", res)
+          if (res.data) {
+            this.formValues = {
+              ...this.formValues,
+              description: res.data
+            };
+            this.cdr.detectChanges();
+          }
+        },
+        error: (err) => {
+          console.error('Error generating description', err);
+          this.alertsService.showErrorAlert('Error al generar la descripción');
+        }
+      });
+    } else {
+      this.alertsService.showWarningAlert('Por favor, ingresa un nombre para la especialidad');
+    }
   }
 }

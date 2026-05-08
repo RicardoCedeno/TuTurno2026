@@ -8,7 +8,7 @@ export class SpecialtyMapper {
             id: specialty.id,
             name: specialty.name,
             description: specialty.description,
-            doctorsSpecialties: specialty.DoctorsSpecialties,
+            doctorsSpecialties: specialty.doctorsSpecialties,
         };
     }
 
@@ -19,7 +19,7 @@ export class SpecialtyMapper {
             description: dto.description,
             createdAt: new Date(),
             updatedAt: new Date(),
-            DoctorsSpecialties: [],
+            doctorsSpecialties: [],
         };
     }
 }

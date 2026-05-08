@@ -32,6 +32,7 @@ export class DoctorsForm implements OnInit {
   };
   
   specialties = signal<ISpecialty[]>([]);
+  searchTerm = signal('');
   loadingSpecialties = signal(false);
   buttonLabel: string = '';
   
@@ -103,6 +104,18 @@ export class DoctorsForm implements OnInit {
 
   isSpecialtySelected(specialtyId: string): boolean {
     return !!this.formValues.doctorsSpecialties?.some(ds => ds.specialtyId === specialtyId);
+  }
+
+  filteredSpecialties() {
+    const term = this.searchTerm().toLowerCase();
+    return this.specialties().filter(s => 
+      s.name.toLowerCase().includes(term) || 
+      s.description.toLowerCase().includes(term)
+    );
+  }
+
+  getSpecialtyById(id: string): ISpecialty | undefined {
+    return this.specialties().find(s => s.id === id);
   }
 
   onSubmit(form: NgForm) {

@@ -10,6 +10,7 @@ import appointmentRoutes from './routes/AppointmentRoutes';
 import appointmentCancellationRoutes from './routes/AppointmentCancellationRoutes';
 import doctorAvailabilityRoutes from './routes/DoctorAvailabilityRoutes';
 import doctorUnavailabilityRoutes from './routes/DoctorUnavailabilityRoutes';
+import specialtyAIRoutes from './routes/AIRoutes/specialtyAIRoutes';
 
 const app: Application = express();
 
@@ -43,6 +44,7 @@ app.use('/api/appointments', appointmentRoutes);
 app.use('/api/appointment-cancellations', appointmentCancellationRoutes);
 app.use('/api/doctor-availability', doctorAvailabilityRoutes);
 app.use('/api/doctor-unavailability', doctorUnavailabilityRoutes);
+app.use('/api/ai/specialties', specialtyAIRoutes);
 
 // ─── 404 Handler ────────────────────────────────────────────────────────────
 app.use((_req: Request, res: Response) => {
