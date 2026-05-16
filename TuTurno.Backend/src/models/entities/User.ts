@@ -1,47 +1,41 @@
+import { Role } from "@prisma/client";
+import { Location } from "./Location";
+
 export class User {
   id?: string;
   name: string;
   email: string;
-  role: string;
+  phone?: string | null;
+  role: Role;
   active: boolean;
+  locationId?: string;
   createdAt?: Date;
   updatedAt?: Date;
+  location?: Location;
+  password?: string;
+
 
   constructor(data: {
     id?: string;
     name: string;
     email: string;
-    role?: string;
+    phone?: string | null;
+    role?: Role;
     active?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
+    locationId?: string;
+    password?: string;
   }) {
     this.id = data.id;
     this.name = data.name;
     this.email = data.email;
-    this.role = data.role ?? 'user';
+    this.phone = data.phone;
+    this.role = data.role ?? Role.RECEPCIONIST;
     this.active = data.active ?? true;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
-  }
-
-  isAdmin(): boolean {
-    return this.role === 'admin';
-  }
-
-  deactivate(): void {
-    this.active = false;
-  }
-
-  toJSON() {
-    return {
-      id: this.id,
-      name: this.name,
-      email: this.email,
-      role: this.role,
-      active: this.active,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
-    };
+    this.locationId = data.locationId;
+    this.password = data.password;
   }
 }

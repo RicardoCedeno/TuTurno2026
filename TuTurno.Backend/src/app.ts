@@ -46,6 +46,7 @@ app.use('/api/doctor-availability', doctorAvailabilityRoutes);
 app.use('/api/doctor-unavailability', doctorUnavailabilityRoutes);
 app.use('/api/ai/specialties', specialtyAIRoutes);
 
+
 // ─── 404 Handler ────────────────────────────────────────────────────────────
 app.use((_req: Request, res: Response) => {
   res.status(404).json({ success: false, message: 'Route not found' });

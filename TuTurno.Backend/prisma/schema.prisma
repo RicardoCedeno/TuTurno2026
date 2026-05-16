@@ -8,15 +8,38 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  role      String   @default("user")
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String    @id @default(uuid())
+  name           String
+  email          String    @unique
+  password       String    // Hash de la contraseña temporal o definitiva
+  phone          String?
+  avatar         String?   // Foto de perfil para el dashboard
+
+  // Roles y Estado administrativo
+  role           Role      @default(RECEPCIONIST)
+  active         Boolean   @default(true) // Permite suspender accesos fácilmente
+
+  // Seguridad JWT y Sesiones
+  refreshToken   String?
+  resetToken     String?
+  resetTokenExp  DateTime?
+
+  // Control de auditoría
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // Relación obligatoria para un SaaS: ¿A qué negocio pertenece este usuario?
+  locationId    String
+  location      Location    @relation(fields: [locationId], references: [id])
 
   @@map("users")
+}
+
+enum Role {
+  SUPERADMIN      // Tú (para soporte global del SaaS)
+  ADMIN           // El dueño del consultorio/clínica (paga la suscripción)
+  MEDICO          // El profesional que consulta su agenda
+  RECEPCIONIST    // La persona que gestiona las citas de todos
 }
 
 model Specialty {
@@ -109,6 +132,7 @@ model Location {
   updatedAt DateTime @updatedAt
 
   offices   Office[]
+  users     User[]
 
   @@map("locations")
 }

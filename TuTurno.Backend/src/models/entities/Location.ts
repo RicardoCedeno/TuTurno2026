@@ -1,4 +1,5 @@
 import { Office } from "./Office";
+import { User } from "./User";
 
 export class Location {
     id: string;
@@ -11,6 +12,9 @@ export class Location {
     active?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
+    users?: User[] = [];
+
+
 
     // ---------------------- Navegación ----------------------
     offices?: Office[] = [];
