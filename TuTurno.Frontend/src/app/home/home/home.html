@@ -1,10 +1,79 @@
-<div class="page-container">
-  <div class="card">
-    <div class="card-header">
-      <h2 class="text-title">Dashboard</h2>
+<div class="home-wrapper">
+  <!-- Animated Background -->
+  <div class="particles-container">
+    <div class="particle" style="width: 10px; height: 10px; left: 10%; animation-duration: 15s;"></div>
+    <div class="particle" style="width: 15px; height: 15px; left: 30%; animation-duration: 25s; animation-delay: 2s;"></div>
+    <div class="particle" style="width: 8px; height: 8px; left: 50%; animation-duration: 20s; animation-delay: 5s;"></div>
+    <div class="particle" style="width: 12px; height: 12px; left: 70%; animation-duration: 18s; animation-delay: 1s;"></div>
+    <div class="particle" style="width: 20px; height: 20px; left: 90%; animation-duration: 30s; animation-delay: 8s;"></div>
+  </div>
+
+  <div class="page-container relative z-10">
+    <!-- Hero Section -->
+    <header class="hero-section">
+      <div class="hero-content animate-slide-up">
+        <h1 class="hero-title">
+          <span class="gradient-text">TuTurno</span> Dashboard
+        </h1>
+        <p class="hero-subtitle">
+          Gestión inteligente para profesionales de la salud. Optimiza tu tiempo, mejora la atención.
+        </p>
+      </div>
+      
+      <!-- AI Quick Pulse -->
+      <div class="ai-pulse animate-fade-in">
+        <div class="pulse-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2"/><path d="m4.93 4.93.71.71"/><path d="M2 12h2"/><path d="m4.93 19.07.71-.71"/><path d="M12 20v2"/><path d="m18.36 18.36.71.71"/><path d="M20 12h2"/><path d="m18.36 5.64.71-.71"/><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></svg>
+        </div>
+        <div class="pulse-text">
+          <span class="pulse-label">IA Activa:</span> Asignación optimizada de recursos lista.
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation Sections -->
+    <div class="sections-grid">
+      @for (category of features; track category.category) {
+        <section class="feature-category">
+          <h2 class="category-title">{{ category.category }}</h2>
+          <div class="cards-grid">
+            @for (item of category.items; track item.title) {
+              <a [routerLink]="item.route" class="premium-card group" [attr.data-color]="item.color">
+                <div class="card-glow"></div>
+                <div class="card-inner">
+                  <div class="card-icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="item.icon" />
+                    </svg>
+                  </div>
+                  <div class="card-content">
+                    <h3 class="card-title">{{ item.title }}</h3>
+                    <p class="card-description">{{ item.description }}</p>
+                  </div>
+                  <div class="card-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
+                  </div>
+                </div>
+              </a>
+            }
+          </div>
+        </section>
+      }
     </div>
-    <div class="card-body">
-      <p class="text-body">Bienvenido a TuTurno. Seleccione una opción del menú para comenzar.</p>
-    </div>
+
+    <!-- Footer Stats / Info -->
+    <footer class="home-footer animate-fade-in">
+      <div class="footer-card glass">
+        <div class="footer-item">
+          <span class="footer-val">100%</span>
+          <span class="footer-label">Disponibilidad</span>
+        </div>
+        <div class="divider"></div>
+        <div class="footer-item">
+          <span class="footer-val">Encrypted</span>
+          <span class="footer-label">Seguridad Datos</span>
+        </div>
+      </div>
+    </footer>
   </div>
 </div>
