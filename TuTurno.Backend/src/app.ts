@@ -11,6 +11,7 @@ import appointmentCancellationRoutes from './routes/AppointmentCancellationRoute
 import doctorAvailabilityRoutes from './routes/DoctorAvailabilityRoutes';
 import doctorUnavailabilityRoutes from './routes/DoctorUnavailabilityRoutes';
 import specialtyAIRoutes from './routes/AIRoutes/specialtyAIRoutes';
+import { authMiddleware } from './middlewares/authMiddleware';
 
 const app: Application = express();
 
@@ -36,7 +37,7 @@ app.get('/health', (_req: Request, res: Response) => {
 
 app.use('/api/users', userRoutes);
 app.use('/api/specialties', specialtyRoutes);
-app.use('/api/doctors', doctorRoutes);
+app.use('/api/doctors', authMiddleware, doctorRoutes);
 app.use('/api/patients', patientRoutes);
 app.use('/api/offices', officeRoutes);
 app.use('/api/locations', locationRoutes);
