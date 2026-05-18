@@ -14,7 +14,7 @@ export class DoctorServices {
     return this.apiServices.post<IResponse<string[]>>('/doctors/createDoctor', doctor, { authenticated: false });
   }
   getDoctors(): Observable<IResponse<IDoctor[]>> {
-    return this.apiServices.get<IResponse<IDoctor[]>>('/doctors/getAllDoctors', { authenticated: false });
+    return this.apiServices.get<IResponse<IDoctor[]>>('/doctors/getAllDoctors', { authenticated: true });
   }
   getDoctorById(id: string): Observable<IResponse<IDoctor>> {
     return this.apiServices.get<IResponse<IDoctor>>(`/doctors/getDoctorById/${id}`, { authenticated: false });

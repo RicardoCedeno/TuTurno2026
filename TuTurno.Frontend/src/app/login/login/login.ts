@@ -1,20 +1,29 @@
-import { Component, signal, OnInit, OnDestroy } from '@angular/core';
+import { Component, signal, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { AuthServices } from '../../services/auth-services';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login implements OnInit, OnDestroy {
+  private authServices = inject(AuthServices);
+  private router = inject(Router);
+  private destroy$ = new Subject<void>();
+
   email = signal('');
   password = signal('');
   showPassword = signal(false);
   isLoading = signal(false);
-  
+  errorMessage = signal('');
+
   // Carousel logic
   images = [
     'assets/tuturno_login_1.png',
@@ -36,6 +45,8 @@ export class Login implements OnInit, OnDestroy {
     if (this.carouselInterval) {
       clearInterval(this.carouselInterval);
     }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   startCarousel() {
@@ -49,11 +60,28 @@ export class Login implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.errorMessage.set('');
     if (this.email() && this.password()) {
       this.isLoading.set(true);
-      console.log('Login attempt:', { email: this.email(), password: this.password() });
-      // Simular delay de red
-      setTimeout(() => this.isLoading.set(false), 2000);
+      this.authServices
+        .login(this.email(), this.password())
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (response) => {
+            if (response.success) {
+              localStorage.setItem('token', response.data.token);
+              localStorage.setItem('user', JSON.stringify(response.data.user));
+              this.router.navigate(['/dashboard']);
+            } else {
+              this.errorMessage.set(response.errors?.[0] || 'Error en el login');
+              this.isLoading.set(false);
+            }
+          },
+          error: (error) => {
+            this.errorMessage.set(error.error?.errors?.[0] || 'Error al conectar con el servidor');
+            this.isLoading.set(false);
+          }
+        });
     }
   }
 }

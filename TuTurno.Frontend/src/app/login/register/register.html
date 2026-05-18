@@ -1,0 +1,349 @@
+<div class="register-split-layout">
+    <!-- Left Side: Form -->
+    <div class="register-form-side relative">
+        <!-- Decorative subtle background element -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-[var(--color-bg-hover)] rounded-bl-full opacity-50 -z-10"></div>
+
+        <!-- Brand Section -->
+        <div class="mb-6">
+            <div class="inline-flex items-center gap-3 mb-3 group cursor-default">
+                <div class="p-2 bg-[var(--color-bg-card)] rounded-2xl shadow-[var(--shadow-sm)] border border-[var(--color-border)] group-hover:shadow-[var(--shadow-md)] group-hover:border-[var(--color-primary-light)] transition-all duration-500">
+                    <svg class="w-6 h-6 text-[var(--color-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-xl font-black text-[var(--color-text-main)] tracking-tighter">TuTurno</h1>
+            </div>
+            <h2 class="text-xl font-extrabold text-[var(--color-text-main)] tracking-tight">Crear Cuenta</h2>
+            <p class="text-[var(--color-text-muted)] text-xs font-medium">Completa el formulario para registrarte.</p>
+        </div>
+
+        <!-- Success Message -->
+        @if (successMessage()) {
+            <div class="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                <p class="text-green-700 text-sm font-medium">{{ successMessage() }}</p>
+            </div>
+        }
+
+        <!-- Error Message -->
+        @if (errorMessage()) {
+            <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p class="text-red-700 text-sm font-medium">{{ errorMessage() }}</p>
+            </div>
+        }
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4">
+            <!-- Name Field -->
+            <div class="form-group">
+                <label class="form-label">Nombre Completo</label>
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors duration-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <input type="text" formControlName="name" placeholder="Juan Pérez"
+                        [class.border-red-500]="isFieldInvalid('name')"
+                        class="form-control pl-12">
+                </div>
+                @if (isFieldInvalid('name')) {
+                    <p class="text-red-600 text-xs mt-1">{{ getFieldError('name') }}</p>
+                }
+            </div>
+
+            <!-- Email Field -->
+            <div class="form-group">
+                <label class="form-label">Correo Electrónico</label>
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors duration-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206"></path>
+                        </svg>
+                    </div>
+                    <input type="email" formControlName="email" placeholder="ejemplo@correo.com"
+                        [class.border-red-500]="isFieldInvalid('email')"
+                        class="form-control pl-12">
+                </div>
+                @if (isFieldInvalid('email')) {
+                    <p class="text-red-600 text-xs mt-1">{{ getFieldError('email') }}</p>
+                }
+            </div>
+
+            <!-- Phone Field -->
+            <div class="form-group">
+                <label class="form-label">Teléfono</label>
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors duration-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 00.948.684l1.498 4.493a1 1 0 00.502.756l2.048 1.029a11.04 11.04 0 01-5.516 5.516l-1.029-2.048a1 1 0 00-.756-.502l-4.493-1.498a1 1 0 00-.684-.948A2 2 0 012 5z"></path>
+                        </svg>
+                    </div>
+                    <input type="tel" formControlName="phone" placeholder="+1 (555) 000-0000"
+                        [class.border-red-500]="isFieldInvalid('phone')"
+                        class="form-control pl-12">
+                </div>
+                @if (isFieldInvalid('phone')) {
+                    <p class="text-red-600 text-xs mt-1">{{ getFieldError('phone') }}</p>
+                }
+            </div>
+
+            <!-- Location Field -->
+            <div class="form-group">
+                <label class="form-label">Ubicación</label>
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors duration-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <select formControlName="locationId"
+                        [class.border-red-500]="isFieldInvalid('locationId')"
+                        class="form-control pl-12">
+                        <option value="">Seleccionar una ubicación</option>
+                        @for (location of locations(); track location.id) {
+                            <option [value]="location.id">{{ location.name }}</option>
+                        }
+                    </select>
+                </div>
+                @if (isFieldInvalid('locationId')) {
+                    <p class="text-red-600 text-xs mt-1">{{ getFieldError('locationId') }}</p>
+                }
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group">
+                <label class="form-label">Contraseña</label>
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors duration-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <input [type]="showPassword() ? 'text' : 'password'" formControlName="password" placeholder="••••••••"
+                        [class.border-red-500]="isFieldInvalid('password')"
+                        class="form-control pl-12">
+                    <button type="button" (click)="togglePassword()"
+                        class="absolute inset-y-0 right-0 pr-4 flex items-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors duration-300">
+                        @if (!showPassword()) {
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        }
+                        @if (showPassword()) {
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.882 9.882L5.146 5.147m13.71 13.71l-4.738-4.736m-4.568-4.568L15.364 2.636"></path>
+                            </svg>
+                        }
+                    </button>
+                </div>
+                @if (isFieldInvalid('password')) {
+                    <p class="text-red-600 text-xs mt-1">{{ getFieldError('password') }}</p>
+                }
+                <p class="text-[var(--color-text-muted)] text-xs mt-1">Mínimo 8 caracteres, incluir mayúsculas y números</p>
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div class="form-group">
+                <label class="form-label">Confirmar Contraseña</label>
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors duration-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <input [type]="showConfirmPassword() ? 'text' : 'password'" formControlName="confirmPassword" placeholder="••••••••"
+                        [class.border-red-500]="isFieldInvalid('confirmPassword') || hasPasswordMismatch()"
+                        class="form-control pl-12">
+                    <button type="button" (click)="toggleConfirmPassword()"
+                        class="absolute inset-y-0 right-0 pr-4 flex items-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors duration-300">
+                        @if (!showConfirmPassword()) {
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        }
+                        @if (showConfirmPassword()) {
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.882 9.882L5.146 5.147m13.71 13.71l-4.738-4.736m-4.568-4.568L15.364 2.636"></path>
+                            </svg>
+                        }
+                    </button>
+                </div>
+                @if (isFieldInvalid('confirmPassword')) {
+                    <p class="text-red-600 text-xs mt-1">{{ getFieldError('confirmPassword') }}</p>
+                }
+                @if (hasPasswordMismatch()) {
+                    <p class="text-red-600 text-xs mt-1">Las contraseñas no coinciden</p>
+                }
+            </div>
+
+            <!-- Optional Fields Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Birth Date Field -->
+                <div class="form-group">
+                    <label class="form-label">Fecha de Nacimiento</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors duration-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <input type="date" formControlName="birthDate" class="form-control pl-12">
+                    </div>
+                </div>
+
+                <!-- Gender Field -->
+                <div class="form-group">
+                    <label class="form-label">Género</label>
+                    <select formControlName="gender" class="form-control">
+                        <option value="">Seleccionar</option>
+                        @for (gender of genderOptions; track gender) {
+                            <option [value]="gender">{{ gender }}</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Address Field -->
+                <div class="form-group">
+                    <label class="form-label">Dirección</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors duration-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                        </div>
+                        <input type="text" formControlName="address" placeholder="Calle 123"
+                            class="form-control pl-12">
+                    </div>
+                </div>
+
+                <!-- City Field -->
+                <div class="form-group">
+                    <label class="form-label">Ciudad</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors duration-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5.5m0 0H9m11 0v-5.5a2.5 2.5 0 00-5 0v5.5m-5 0H4m11 0V9.5a2.5 2.5 0 00-5 0v11.5"></path>
+                            </svg>
+                        </div>
+                        <input type="text" formControlName="city" placeholder="Nueva York"
+                            class="form-control pl-12">
+                    </div>
+                </div>
+
+                <!-- State Field -->
+                <div class="form-group">
+                    <label class="form-label">Estado/Provincia</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors duration-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <input type="text" formControlName="state" placeholder="Nueva York"
+                            class="form-control pl-12">
+                    </div>
+                </div>
+
+                <!-- Country Field -->
+                <div class="form-group">
+                    <label class="form-label">País</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors duration-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20H7m8 0a2 2 0 110-4m0 4a2 2 0 110-4m0 4v-1a2 2 0 10-4 0v1"></path>
+                            </svg>
+                        </div>
+                        <input type="text" formControlName="country" placeholder="Estados Unidos"
+                            class="form-control pl-12">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" [disabled]="registerForm.invalid || isLoading()"
+                class="btn btn-primary w-full mt-6">
+                @if (isLoading()) {
+                    <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                }
+                <span>{{ isLoading() ? 'Registrando...' : 'Crear Cuenta' }}</span>
+            </button>
+        </form>
+
+        <!-- Login Link -->
+        <div class="mt-6 text-center">
+            <p class="text-[var(--color-text-muted)] text-[11px] font-medium">
+                ¿Ya tienes cuenta?
+                <a routerLink="/login" class="text-[var(--color-primary)] font-bold hover:text-[var(--color-primary-dark)] transition-colors ml-1 inline-flex items-center gap-1 group">
+                    Inicia Sesión
+                    <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-auto pt-6 flex items-center justify-between border-t border-[var(--color-border)]">
+            <p class="text-[var(--color-text-muted)] text-[9px] font-bold opacity-40 uppercase tracking-widest">
+                &copy; 2026 TuTurno
+            </p>
+            <div class="flex gap-3">
+                <a href="#" class="text-[9px] font-bold text-[var(--color-text-muted)] opacity-40 hover:opacity-100 transition-opacity uppercase tracking-widest">Privacidad</a>
+                <a href="#" class="text-[9px] font-bold text-[var(--color-text-muted)] opacity-40 hover:opacity-100 transition-opacity uppercase tracking-widest">Soporte</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side: Info Section -->
+    <div class="register-image-side relative bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] overflow-hidden">
+        <!-- Animated background elements -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 animate-pulse"></div>
+        <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24 animate-pulse" style="animation-delay: 1s;"></div>
+
+        <!-- Content -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center z-10 px-8 text-white">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-lg">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-3xl font-black leading-[1.2] mb-4 drop-shadow-2xl tracking-tight">Únete a TuTurno</h3>
+                <p class="text-sky-100 font-medium text-lg opacity-90 max-w-md drop-shadow-lg mb-8">Accede a una plataforma moderna para gestionar tus citas médicas de manera segura y eficiente.</p>
+
+                <!-- Features -->
+                <div class="space-y-3 text-left max-w-xs">
+                    <div class="flex items-center gap-3">
+                        <div class="w-5 h-5 rounded-full bg-white/30 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium">Seguridad garantizada</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-5 h-5 rounded-full bg-white/30 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium">Interfaz intuitiva</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-5 h-5 rounded-full bg-white/30 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium">Soporte 24/7</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

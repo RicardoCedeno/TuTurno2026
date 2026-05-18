@@ -2,6 +2,7 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import userRoutes from './routes/userRoutes';
 import specialtyRoutes from './routes/specialtyRoutes';
 import cors from 'cors';
+import authRoutes from './routes/AuthRoutes';
 import doctorRoutes from './routes/DoctorRoutes';
 import patientRoutes from './routes/PatientRoutes';
 import officeRoutes from './routes/OfficeRoutes';
@@ -35,6 +36,7 @@ app.get('/health', (_req: Request, res: Response) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/specialties', specialtyRoutes);
 app.use('/api/doctors', authMiddleware, doctorRoutes);
