@@ -4,12 +4,17 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "baseUrl": "./", // 👈 Añade esto aquí adentro
+    "paths": {       // 👈 Añade esto aquí adentro
+      "@tutu/calendar": [
+        "../../componentes/calendar/@tutu/calendar"
+      ]
+    }
   },
-  "include": [
-    "src/**/*.ts"
+  "files": [
+    "src/main.ts"
   ],
-  "exclude": [
-    "src/**/*.spec.ts"
+  "include": [
+    "src/**/*.d.ts"
   ]
 }

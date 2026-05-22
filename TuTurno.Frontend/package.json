@@ -29,7 +29,7 @@
     "@angular/forms": "^21.1.0",
     "@angular/platform-browser": "^21.1.0",
     "@angular/router": "^21.1.0",
-    "@tutu/calendar": "file:../../componentes/calendar/dist/tutu-calendar/tutu-calendar-0.1.0.tgz",
+    "@tutu/calendar": "file:/Users/ricardo/Documents/proyectos/componentes/calendar",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.26.24",
     "tslib": "^2.3.0"
