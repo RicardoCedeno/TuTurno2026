@@ -14,6 +14,7 @@ export class Payment {
     createdAt?: Date;
     updatedAt?: Date;
 
+    // Relaciones de navegación
     appointment?: Appointment;
     procedure?: Procedure;
 
