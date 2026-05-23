@@ -3,6 +3,8 @@ import { DoctorDto } from "./DoctorDto";
 import { NotificationDto } from "./NotificationDto";
 import { OfficeDto } from "./OfficeDto";
 import { PatientDto } from "./PatientDto";
+import { ProcedureDto } from "./ProcedureDto";
+import { PaymentDto } from "./PaymentDto";
 
 export interface AppointmentDto {
     id: string;
@@ -13,6 +15,8 @@ export interface AppointmentDto {
     duration: number;
     status: string;
     notes?: string | null;
+    procedureId?: string | null;
+    procedureSession?: number | null;
     createdAt?: Date;
     updatedAt?: Date;
 
@@ -21,5 +25,7 @@ export interface AppointmentDto {
     office?: OfficeDto;
     cancellation?: AppointmentCancellationDto;
     notifications?: NotificationDto[];
+    procedure?: ProcedureDto;
+    payments?: PaymentDto[];
 }
 

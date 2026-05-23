@@ -1,4 +1,5 @@
 import { DoctorSpecialty } from "./DoctorSpecialty";
+import { Procedure } from "./Procedure";
 
 export class Doctor{
     id: string;
@@ -14,6 +15,7 @@ export class Doctor{
 
     // ---------------------- Navegación ----------------------
     doctorsSpecialties?: DoctorSpecialty[] = [];
+    procedures?: Procedure[] = [];
 
 
 
@@ -29,5 +31,6 @@ export class Doctor{
         this.createdAt = data.createdAt;
         this.updatedAt = data.updatedAt;
         this.doctorsSpecialties = data.doctorsSpecialties;
+        this.procedures = data.procedures;
     }
 }

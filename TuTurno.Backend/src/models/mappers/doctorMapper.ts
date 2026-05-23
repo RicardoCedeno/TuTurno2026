@@ -1,5 +1,6 @@
 import { DoctorDto } from "../dtos/DoctorDto";
 import { Doctor } from "../entities/Doctor";
+import { ProcedureMapper } from "./ProcedureMapper";
 
 export class DoctorMapper {
     static toDto(doctor: Doctor): DoctorDto {
@@ -12,7 +13,8 @@ export class DoctorMapper {
             city: doctor.city,
             state: doctor.state,
             country: doctor.country,
-            doctorsSpecialties: doctor.doctorsSpecialties
+            doctorsSpecialties: doctor.doctorsSpecialties,
+            procedures: doctor.procedures?.map((procedure) => ProcedureMapper.toDto(procedure)),
         };
     }
 

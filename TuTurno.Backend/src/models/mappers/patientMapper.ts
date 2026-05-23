@@ -2,6 +2,7 @@ import { PatientDto } from "../dtos/PatientDto";
 import { Patient } from "../entities/Patient";
 import { AppointmentMapper } from "./appointmentMapper";
 import { NotificationMapper } from "./notificationMapper";
+import { ProcedureMapper } from "./ProcedureMapper";
 
 export class PatientMapper {
     static toDto(patient: Patient): PatientDto {
@@ -21,6 +22,7 @@ export class PatientMapper {
             updatedAt: patient.updatedAt,
             appointments: patient.appointments?.map((appointment) => AppointmentMapper.toDto(appointment)),
             notifications: patient.notifications?.map((notification) => NotificationMapper.toDto(notification)),
+            procedures: patient.procedures?.map((procedure) => ProcedureMapper.toDto(procedure)),
         };
     }
 

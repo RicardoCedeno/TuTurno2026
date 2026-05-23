@@ -1,5 +1,6 @@
 import { Appointment } from "./Appointment";
 import { Notification } from "./Notification";
+import { Procedure } from "./Procedure";
 
 export class Patient {
     id: string;
@@ -19,6 +20,7 @@ export class Patient {
     // Relaciones (puedes agregar clases/entities reales según existan en el proyecto)
     appointments?: Appointment[] = [];
     notifications?: Notification[] = [];
+    procedures?: Procedure[] = [];
 
     constructor(data: Patient) {
         this.id = data.id;
@@ -36,5 +38,6 @@ export class Patient {
         this.updatedAt = data.updatedAt;
         this.appointments = data.appointments;
         this.notifications = data.notifications;
+        this.procedures = data.procedures;
     }
 }

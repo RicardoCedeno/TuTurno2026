@@ -1,5 +1,6 @@
 import { AppointmentDto } from "./AppointmentDto";
 import { NotificationDto } from "./NotificationDto";
+import { ProcedureDto } from "./ProcedureDto";
 
 export interface PatientDto {
     id: string;
@@ -18,5 +19,6 @@ export interface PatientDto {
 
     appointments?: AppointmentDto[];
     notifications?: NotificationDto[];
+    procedures?: ProcedureDto[];
 }
 

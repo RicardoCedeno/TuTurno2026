@@ -3,6 +3,8 @@ import { Patient } from "./Patient";
 import { Office } from "./Office";
 import { AppointmentCancellation } from "./AppointmentCancellation";
 import { Notification } from "./Notification";
+import { Procedure } from "./Procedure";
+import { Payment } from "./Payment";
 
 export class Appointment {
     id: string;
@@ -13,6 +15,8 @@ export class Appointment {
     duration: number;
     status: string;
     notes?: string | null;
+    procedureId?: string | null;
+    procedureSession?: number | null;
     createdAt?: Date;
     updatedAt?: Date;
 
@@ -22,6 +26,8 @@ export class Appointment {
     office?: Office;
     cancellation?: AppointmentCancellation;
     notifications?: Notification[] = [];
+    procedure?: Procedure;
+    payments?: Payment[] = [];
 
     constructor(data: {
         id: string;
@@ -32,6 +38,8 @@ export class Appointment {
         duration?: number;
         status?: string;
         notes?: string;
+        procedureId?: string;
+        procedureSession?: number;
         createdAt?: Date;
         updatedAt?: Date;
         patient?: Patient;
@@ -39,6 +47,8 @@ export class Appointment {
         office?: Office;
         cancellation?: AppointmentCancellation;
         notifications?: Notification[];
+        procedure?: Procedure;
+        payments?: Payment[];
     }) {
         this.id = data.id;
         this.patientId = data.patientId;
@@ -48,6 +58,8 @@ export class Appointment {
         this.duration = data.duration ?? 30;
         this.status = data.status ?? "scheduled";
         this.notes = data.notes;
+        this.procedureId = data.procedureId;
+        this.procedureSession = data.procedureSession;
         this.createdAt = data.createdAt;
         this.updatedAt = data.updatedAt;
         this.patient = data.patient;
@@ -55,5 +67,7 @@ export class Appointment {
         this.office = data.office;
         this.cancellation = data.cancellation;
         this.notifications = data.notifications ?? [];
+        this.procedure = data.procedure;
+        this.payments = data.payments ?? [];
     }
 }

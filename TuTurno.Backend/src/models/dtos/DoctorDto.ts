@@ -1,5 +1,6 @@
 
 import DoctorSpecialtyDto from "./DoctorSpecialtyDto";
+import { ProcedureDto } from "./ProcedureDto";
 
 //dto para el doctor
 export interface DoctorDto {
@@ -12,4 +13,5 @@ export interface DoctorDto {
     state: string;
     country: string;
     doctorsSpecialties?: DoctorSpecialtyDto[];
+    procedures?: ProcedureDto[];
 }

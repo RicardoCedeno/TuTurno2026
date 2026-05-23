@@ -12,6 +12,8 @@ export class AppointmentMapper {
             duration: appointment.duration,
             status: appointment.status,
             notes: appointment.notes,
+            procedureId: appointment.procedureId,
+            procedureSession: appointment.procedureSession,
             createdAt: appointment.createdAt,
             updatedAt: appointment.updatedAt,
         };
@@ -27,6 +29,8 @@ export class AppointmentMapper {
             duration: dto.duration,
             status: dto.status,
             notes: dto.notes,
+            procedureId: dto.procedureId,
+            procedureSession: dto.procedureSession,
             createdAt: new Date(),
             updatedAt: new Date(),
         };
